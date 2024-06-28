@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import useNavbar from '../hooks/useNavbar'
 import {
   FiChevronDown,
@@ -8,9 +8,11 @@ import {
   FiTruck,
   FiX,
 } from 'react-icons/fi'
+import { ReactNode } from 'react'
 
-const RootLayout = () => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   const { isNavActive, handleNavActive } = useNavbar()
+
   return (
     <div className="flex h-screen">
       <aside className="z-10 h-full w-20 min-w-20 bg-darkblue-700 max-md:absolute max-md:-left-20 max-md:w-20">
@@ -89,7 +91,7 @@ const RootLayout = () => {
           </p>
         </NavLink>
       </nav>
-      <div className="h-full w-full overflow-auto">
+      <div className="flex h-full w-full flex-col overflow-auto">
         <header className="sticky top-0 flex h-20 w-full items-center justify-between gap-6 bg-neutral-100 p-6 shadow-low">
           <button
             onClick={handleNavActive}
@@ -129,8 +131,8 @@ const RootLayout = () => {
             </button>
           </div>
         </header>
-        <main className="h-full w-full bg-orange-500">
-          <Outlet />
+        <main className="h-full w-full overflow-auto px-6 py-8">
+          {children}
         </main>
       </div>
     </div>

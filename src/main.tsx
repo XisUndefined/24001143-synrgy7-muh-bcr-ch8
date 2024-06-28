@@ -1,25 +1,35 @@
-import React from 'react'
+// import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import RootLayout from './layouts/RootLayout'
 import './index.css'
 import NavbarProvider from './contexts/NavbarProvider'
 import Dashboard from './routes/Dashboard'
 import Cars from './routes/Cars'
+import DashboardProvider from './contexts/DashboardProvider'
+import AuthProvider from './contexts/AuthProvider'
+import ProtectedRoute from './components/ProtectedRoute'
+import Login from './routes/Login'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <NavbarProvider>
-        <Routes>
-          {/* <Route path="/" element={<RootLayout />} /> */}
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/cars" element={<Cars />} />
-          </Route>
-        </Routes>
-      </NavbarProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <AuthProvider>
+      <DashboardProvider>
+        <NavbarProvider>
+          <Routes>
+            {/* <Route path="/" element={<RootLayout />} /> */}
+            <Route path="" element={<ProtectedRoute />}>
+              <Route index element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/cars" element={<Cars />} />
+              {/* <Route path="/" element={<RootLayout />}>
+              </Route> */}
+            </Route>
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </NavbarProvider>
+      </DashboardProvider>
+    </AuthProvider>
+  </BrowserRouter>
+  // <React.StrictMode>
+  // </React.StrictMode>
 )
