@@ -15,7 +15,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="flex h-screen">
-      <aside className="z-10 h-full w-20 min-w-20 bg-darkblue-700 max-md:absolute max-md:-left-20 max-md:w-20">
+      <aside className="z-40 h-full w-20 min-w-20 bg-darkblue-700 max-md:absolute max-md:-left-20 max-md:w-20">
         <div className="h-20 w-full p-5">
           <Link
             to={'/'}
@@ -52,7 +52,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         </div>
       </aside>
       <nav
-        className={`h-full bg-darkblue-700 transition-all duration-300 ease-in-out max-md:absolute max-md:pl-20 ${isNavActive ? 'w-3/4 md:w-56' : 'w-0'} text-neutral-100 max-md:-left-20`}
+        className={`z-30 h-full bg-darkblue-700 transition-all duration-300 ease-in-out max-md:absolute max-md:pl-20 ${isNavActive ? 'w-3/4 md:w-56' : 'w-0'} text-neutral-100 max-md:-left-20`}
       >
         <div className="h-20 w-3/5 py-5">
           <Link
@@ -92,7 +92,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         </NavLink>
       </nav>
       <div className="flex h-full w-full flex-col overflow-auto">
-        <header className="sticky top-0 flex h-20 w-full items-center justify-between gap-6 bg-neutral-100 p-6 shadow-low">
+        <header className="sticky top-0 z-50 flex h-20 w-full items-center justify-between gap-6 bg-neutral-100 p-6 shadow-low">
           <button
             onClick={handleNavActive}
             className="transition-all duration-1000"

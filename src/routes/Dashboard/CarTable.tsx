@@ -71,7 +71,7 @@ const CarTable = () => {
           {tableLoading ? (
             <Loading size="10px" bgSize="484px" />
           ) : (
-            <table className="w-max table-fixed">
+            <table className="w-full min-w-max table-fixed">
               <thead>
                 <tr className="grid-cols-28 grid bg-darkblue-100">
                   <th className="col-span-1 px-4 py-3 text-sm">No</th>
