@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import Breadcrumb from '../../components/Breadcrumb'
 import Loading from '../../components/Loading'
 import useDashboard from '../../hooks/useDashboard'
@@ -13,7 +13,6 @@ import CarTable from './CarTable'
 
 const Dashboard = () => {
   const location = useLocation()
-  const navigate = useNavigate()
   const {
     setOrders,
     setCars,
@@ -25,11 +24,15 @@ const Dashboard = () => {
     setIsLoading,
     isLoading,
   } = useDashboard()
-  const { token, logout } = useAuth()
+  const { token } = useAuth()
 
   useEffect(() => {
     const fetchData = async () => {
       if (token) {
+        if (!isLoading) {
+          setIsLoading(true)
+        }
+
         const searchParams = new URLSearchParams(location.search)
         const params = parseParams(searchParams)
 
@@ -47,18 +50,10 @@ const Dashboard = () => {
 
           const resCars = await carResponse.json()
 
-          if (carResponse.status === 403) {
-            await logout()
-            navigate('/login', {
-              state: {
-                error: resCars.message,
-              },
-            })
-            return
-          }
-
           const orderResponse = await api.get(
-            Object.keys(params).length > 0 ? `/order?${query}` : '/order',
+            Object.keys(params).length > 0
+              ? `/admin/order?${query}`
+              : '/admin/order',
             {
               headers: { Authorization: `Bearer ${token}` },
             }

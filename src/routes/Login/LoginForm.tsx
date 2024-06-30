@@ -44,6 +44,14 @@ const LoginForm = () => {
         setResErrors(res)
         navigate('/login')
       } else {
+        if (res.data.role === 'customer') {
+          return navigate('/login', {
+            state: {
+              error:
+                'The current user do not have the authorization of accessing this route',
+            },
+          })
+        }
         setResErrors(null)
         login(res.data.token)
         navigate('/')
