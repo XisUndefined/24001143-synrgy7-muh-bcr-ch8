@@ -274,7 +274,7 @@ const OrderTable = () => {
                 ) : (
                   <tr className="grid grid-cols-19">
                     <td className="col-span-full px-4 py-3 text-center text-sm">
-                      {ordersNotFound!.message}
+                      {ordersNotFound ? ordersNotFound.message : ''}
                     </td>
                   </tr>
                 )}

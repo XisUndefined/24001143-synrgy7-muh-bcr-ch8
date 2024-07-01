@@ -16,7 +16,7 @@ export default {
     extend: {
       colors: {
         danger: '#fa2c5a',
-        success: '#df9947',
+        success: '#73ca5c',
         warning: '#f9cc00',
         darkblue: {
           900: '#091b6f',

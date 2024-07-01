@@ -16,14 +16,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <DashboardProvider>
         <NavbarProvider>
           <Routes>
-            {/* <Route path="/" element={<RootLayout />} /> */}
             <Route path="/" element={<ProtectedRoute />}>
               <Route index element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/cars" element={<Cars />} />
+              <Route path="/cars/category/:category" element={<Cars />} />
               <Route path="/logout" element={<Logout />} />
-              {/* <Route path="/" element={<RootLayout />}>
-              </Route> */}
             </Route>
             <Route path="/login" element={<Login />} />
           </Routes>

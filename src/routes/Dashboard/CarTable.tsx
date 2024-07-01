@@ -368,7 +368,7 @@ const CarTable = () => {
                 ) : (
                   <tr className="grid grid-cols-19">
                     <td className="col-span-full px-4 py-3 text-center text-sm">
-                      {carsNotFound!.message}
+                      {carsNotFound ? carsNotFound.message : ''}
                     </td>
                   </tr>
                 )}
