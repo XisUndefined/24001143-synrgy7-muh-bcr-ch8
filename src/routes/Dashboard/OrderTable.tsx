@@ -37,14 +37,18 @@ const OrderTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'email' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-email' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -59,14 +63,18 @@ const OrderTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'car' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-car' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -85,14 +93,18 @@ const OrderTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'start_rent' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-start_rent' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -113,14 +125,18 @@ const OrderTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'finish_rent' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-finish_rent' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -137,14 +153,18 @@ const OrderTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'price' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-price' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -161,14 +181,18 @@ const OrderTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'status' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-status' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>

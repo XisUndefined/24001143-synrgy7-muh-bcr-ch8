@@ -8,14 +8,14 @@ const Card = () => {
   return (
     <>
       {cars && (
-        <div className="my-6 flex w-full flex-col gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
+        <div className="my-6 flex w-full flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5">
           {cars.map((car, idx) => (
             <div
               key={idx + 3}
               className="flex flex-col gap-4 rounded-lg bg-neutral-100 shadow-low"
             >
               <img
-                className="h-1/2 rounded-t-lg"
+                className="h-1/2 rounded-t-lg object-cover"
                 src={
                   car.image
                     ? `${car.image}`
@@ -28,7 +28,7 @@ const Card = () => {
               <div className="flex h-1/2 flex-wrap gap-6 px-6 pb-6">
                 <article className="flex flex-wrap gap-4">
                   <span className="flex flex-wrap gap-2">
-                    <p className="w-full text-sm">
+                    <p className="line-clamp-1 w-full text-sm">
                       {car.manufacture} {car.model}/{car.type}
                     </p>
                     <p className="w-full text-base font-bold">

@@ -37,14 +37,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'name' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-name' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -61,14 +65,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'category' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-category' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -77,7 +85,11 @@ const CarTable = () => {
                     <button
                       className="flex h-5 flex-col py-1"
                       onClick={() =>
-                        setSort(sort === 'price' ? '-price' : 'price')
+                        setSort(
+                          sort === 'rent_per_day'
+                            ? '-rent_per_day'
+                            : 'rent_per_day'
+                        )
                       }
                     >
                       <IconContext.Provider
@@ -85,14 +97,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'rent_per_day' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-rent_per_day' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -111,14 +127,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'created_at' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-created_at' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -137,14 +157,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'updated_at' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-updated_at' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -163,14 +187,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'deleted_at' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-deleted_at' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -189,14 +217,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'created_by' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-created_by' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -215,14 +247,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'updated_by' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-updated_by' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
@@ -241,14 +277,18 @@ const CarTable = () => {
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronUp />
+                        <FiChevronUp
+                          className={`${sort === 'deleted_by' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                       <IconContext.Provider
                         value={{
                           style: { strokeWidth: '5px' },
                         }}
                       >
-                        <FiChevronDown />
+                        <FiChevronDown
+                          className={`${sort === '-deleted_by' ? 'text-black' : 'text-neutral-500'}`}
+                        />
                       </IconContext.Provider>
                     </button>
                   </th>
