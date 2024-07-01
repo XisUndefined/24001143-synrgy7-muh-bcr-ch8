@@ -8,10 +8,13 @@ import {
   FiTruck,
   FiX,
 } from 'react-icons/fi'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
+import useAuth from '../hooks/useAuth'
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   const { isNavActive, handleNavActive } = useNavbar()
+  const { user } = useAuth()
+  const [dropdown, setDropdown] = useState(false)
 
   return (
     <div className="flex h-screen">
@@ -120,15 +123,42 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
                 Search
               </button>
             </form>
-            <button className="flex items-center gap-2 max-md:min-w-fit">
+            <button
+              className="flex items-center gap-2 max-md:min-w-fit"
+              onClick={() => setDropdown(!dropdown)}
+            >
               <img
-                src="https://ui-avatars.com/api/?name=Unis+Badri"
+                src={user?.avatar}
                 alt="profile-picture"
                 className="h-10 w-10 rounded-full"
               />
-              <p className="line-clamp-1 text-sm max-lg:hidden">Unis Badri</p>
-              <FiChevronDown className="text-2xl max-md:hidden" />
+              <p className="line-clamp-1 text-sm max-lg:hidden">
+                {user?.firstname} {user?.lastname}
+              </p>
+              <FiChevronDown
+                className={`text-2xl transition-transform duration-300 ease-in-out max-md:hidden ${dropdown ? 'rotate-180' : ''}`}
+              />
             </button>
+            {dropdown && (
+              <ul
+                className={`absolute right-6 top-20 my-2 flex select-none flex-wrap divide-y text-nowrap rounded-sm bg-neutral-100 px-3 text-sm leading-5 shadow-low transition-all duration-500 ease-in-out`}
+              >
+                <li className="w-full py-2">
+                  <Link className="inline-block w-full" to={'/profile'}>
+                    Profile
+                  </Link>
+                </li>
+                <li className="w-full py-2">
+                  <Link
+                    className="inline-block w-full"
+                    to={'/logout'}
+                    replace={true}
+                  >
+                    Sign Out
+                  </Link>
+                </li>
+              </ul>
+            )}
           </div>
         </header>
         <main className="h-full w-full overflow-auto px-6 py-8">

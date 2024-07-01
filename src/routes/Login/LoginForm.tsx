@@ -37,24 +37,28 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<LoginValues> = async (data) => {
     const { email, password } = data
+    setResErrors(null)
     try {
       const response = await api.post('/auth/login', { email, password })
       const res = await response.json()
       if (!response.ok) {
         setResErrors(res)
-        navigate('/login')
+        navigate('/login', { replace: true })
       } else {
         if (res.data.role === 'customer') {
-          return navigate('/login', {
+          setResErrors(null)
+          navigate('/login', {
             state: {
               error:
                 'The current user do not have the authorization of accessing this route',
             },
+            replace: true,
           })
+          return
         }
         setResErrors(null)
         login(res.data.token)
-        navigate('/')
+        navigate('/', { replace: true })
       }
     } catch {
       setResErrors({

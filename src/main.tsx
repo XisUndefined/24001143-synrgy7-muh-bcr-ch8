@@ -8,6 +8,7 @@ import DashboardProvider from './contexts/DashboardProvider'
 import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './routes/Login'
+import Logout from './routes/Logout'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route index element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/cars" element={<Cars />} />
+              <Route path="/logout" element={<Logout />} />
               {/* <Route path="/" element={<RootLayout />}>
               </Route> */}
             </Route>
