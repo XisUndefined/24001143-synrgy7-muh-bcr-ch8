@@ -106,10 +106,10 @@ const Dashboard = () => {
   ) : (
     <RootLayout>
       <Breadcrumb />
-      <TableProvider>
+      <TableProvider options={{ table: 'orders' }}>
         <OrderTable />
       </TableProvider>
-      <TableProvider>
+      <TableProvider options={{ table: 'cars' }}>
         <CarTable />
       </TableProvider>
     </RootLayout>

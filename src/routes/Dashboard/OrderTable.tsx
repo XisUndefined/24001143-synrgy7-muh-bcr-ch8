@@ -1,83 +1,13 @@
 import useDashboard from '../../hooks/useDashboard'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { IconContext } from 'react-icons'
-import { useEffect, useRef } from 'react'
-import useAuth from '../../hooks/useAuth'
-import api from '../../api/api'
 import Loading from '../../components/Loading'
 import SkipPage from './SkipPage'
 import useTable from '../../hooks/useTable'
-import { useLocation } from 'react-router-dom'
 
 const OrderTable = () => {
-  const { tableLoading, setTableLoading, page, size, sort, setSort } =
-    useTable()
-  const {
-    orders,
-    ordersNotFound,
-    setOrders,
-    setOrdersNotFound,
-    ordersPage,
-    setOrdersPage,
-    parseParams,
-  } = useDashboard()
-  const { token } = useAuth()
-  const location = useLocation()
-  const isInitialRender = useRef(true)
-
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false
-      return
-    }
-
-    const updateData = async () => {
-      setTableLoading(true)
-      const searchParams = parseParams(new URLSearchParams(location.search))
-      if (page !== null) {
-        searchParams.page = `${page}`
-      }
-      if (size !== null) {
-        searchParams.size = `${size}`
-      }
-      if (sort !== null) {
-        searchParams.sort = sort
-      }
-
-      try {
-        const orderResponse = await api.get(
-          Object.keys(searchParams).length > 0
-            ? `/admin/order?${new URLSearchParams(searchParams).toString()}`
-            : '/admin/order',
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-
-        const resOrders = await orderResponse.json()
-
-        if (!orderResponse.ok) {
-          setOrdersNotFound(resOrders)
-          setOrders(null)
-          setOrdersPage(null)
-        } else if (orderResponse.ok) {
-          setOrders(resOrders.data)
-          setOrdersPage(resOrders.paging)
-          setOrdersNotFound(null)
-        }
-      } catch {
-        setOrdersNotFound({
-          status: 'error',
-          message: 'Something went wrong!',
-        })
-        setOrders(null)
-        setOrdersPage(null)
-      } finally {
-        setTableLoading(false)
-      }
-    }
-    updateData()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size, sort, page])
+  const { tableLoading, sort, setSort } = useTable()
+  const { orders, ordersNotFound, ordersPage } = useDashboard()
 
   return (
     <>

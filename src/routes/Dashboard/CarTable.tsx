@@ -1,82 +1,13 @@
-import { useEffect, useRef } from 'react'
 import useDashboard from '../../hooks/useDashboard'
-import useAuth from '../../hooks/useAuth'
 import Loading from '../../components/Loading'
-import api from '../../api/api'
 import SkipPage from './SkipPage'
 import useTable from '../../hooks/useTable'
-import { useLocation } from 'react-router-dom'
 import { IconContext } from 'react-icons'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 
 const CarTable = () => {
-  const { tableLoading, setTableLoading, page, size, sort, setSort } =
-    useTable()
-  const {
-    cars,
-    carsNotFound,
-    setCars,
-    setCarsNotFound,
-    carsPage,
-    setCarsPage,
-    parseParams,
-  } = useDashboard()
-  const { token } = useAuth()
-  const location = useLocation()
-  const isInitialRender = useRef(true)
-
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false
-      return
-    }
-
-    const updateData = async () => {
-      setTableLoading(true)
-      const searchParams = parseParams(new URLSearchParams(location.search))
-      if (page !== null) {
-        searchParams.page = `${page}`
-      }
-      if (size !== null) {
-        searchParams.size = `${size}`
-      }
-      if (sort !== null) {
-        searchParams.sort = sort
-      }
-
-      try {
-        const carResponse = await api.get(
-          Object.keys(searchParams).length > 0
-            ? `/admin/cars?${new URLSearchParams(searchParams).toString()}`
-            : '/admin/cars',
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-
-        const resCars = await carResponse.json()
-
-        if (!carResponse.ok) {
-          setCarsNotFound(resCars)
-          setCars(null)
-          setCarsPage(null)
-        } else if (carResponse.ok) {
-          setCars(resCars.data)
-          setCarsPage(resCars.paging)
-          setCarsNotFound(null)
-        }
-      } catch {
-        setCarsNotFound({
-          status: 'error',
-          message: 'Something went wrong!',
-        })
-        setCars(null)
-        setCarsPage(null)
-      } finally {
-        setTableLoading(false)
-      }
-    }
-    updateData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size, sort, page])
+  const { tableLoading, sort, setSort } = useTable()
+  const { cars, carsNotFound, carsPage } = useDashboard()
 
   return (
     <>
