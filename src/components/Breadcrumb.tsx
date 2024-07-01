@@ -32,23 +32,6 @@ const Breadcrumb = () => {
           )}
         </span>
       ))}
-      {/* {location.pathname.split('/').length > 2 ? (
-        location.pathname.split('/').map((path, idx) => (
-          <>
-            {idx > 1 && <FiChevronRight key={idx + 1} />}
-            {idx > 0 && (
-              <p
-                key={idx + 4}
-                className={`first-letter:capitalize ${location.pathname.split('/').slice(-1)[0] === path ? 'font-display font-light' : ''}`}
-              >{`${path === '' ? 'dashboard' : `${path}`}`}</p>
-            )}
-          </>
-        ))
-      ) : (
-        <p
-          className={`font-display font-light first-letter:capitalize`}
-        >{`${location.pathname.split('/').slice(-1)[0] === '' ? 'dashboard' : `${location.pathname.split('/').slice(-1)[0]}`}`}</p>
-      )} */}
     </span>
   )
 }
