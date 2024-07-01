@@ -2,7 +2,7 @@ import useDashboard from '../../hooks/useDashboard'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { IconContext } from 'react-icons'
 import Loading from '../../components/Loading'
-import SkipPage from './SkipPage'
+import TableNavigation from './TableNavigation'
 import useTable from '../../hooks/useTable'
 
 const OrderTable = () => {
@@ -212,7 +212,7 @@ const OrderTable = () => {
             </table>
           )}
         </div>
-        <SkipPage paging={ordersPage} />
+        <TableNavigation paging={ordersPage} />
       </section>
     </>
   )

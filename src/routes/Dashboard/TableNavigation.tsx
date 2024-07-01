@@ -8,7 +8,7 @@ type Paging = {
   size: number
 }
 
-const SkipPage = ({ paging }: { paging: Paging | null }) => {
+const TableNavigation = ({ paging }: { paging: Paging | null }) => {
   const [sizeDropdown, setSizeDropdown] = useState<boolean>(false)
   const [pageDropdown, setPageDropdown] = useState<boolean>(false)
   const [internalPage, setInternalPage] = useState<number | null>(
@@ -162,4 +162,4 @@ const SkipPage = ({ paging }: { paging: Paging | null }) => {
   )
 }
 
-export default SkipPage
+export default TableNavigation

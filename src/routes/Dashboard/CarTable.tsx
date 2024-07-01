@@ -1,6 +1,6 @@
 import useDashboard from '../../hooks/useDashboard'
 import Loading from '../../components/Loading'
-import SkipPage from './SkipPage'
+import TableNavigation from './TableNavigation'
 import useTable from '../../hooks/useTable'
 import { IconContext } from 'react-icons'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
@@ -307,7 +307,7 @@ const CarTable = () => {
             </table>
           )}
         </div>
-        <SkipPage paging={carsPage} />
+        <TableNavigation paging={carsPage} />
       </section>
     </>
   )
