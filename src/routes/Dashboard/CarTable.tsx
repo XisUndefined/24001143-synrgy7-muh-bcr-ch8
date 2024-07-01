@@ -1,13 +1,17 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import useDashboard from '../../hooks/useDashboard'
 import useAuth from '../../hooks/useAuth'
 import Loading from '../../components/Loading'
 import api from '../../api/api'
 import SkipPage from './SkipPage'
+import useTable from '../../hooks/useTable'
+import { useLocation } from 'react-router-dom'
+import { IconContext } from 'react-icons'
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 
 const CarTable = () => {
-  const [tableLoading, setTableLoading] = useState(false)
-
+  const { tableLoading, setTableLoading, page, size, sort, setSort } =
+    useTable()
   const {
     cars,
     carsNotFound,
@@ -15,8 +19,10 @@ const CarTable = () => {
     setCarsNotFound,
     carsPage,
     setCarsPage,
+    parseParams,
   } = useDashboard()
   const { token } = useAuth()
+  const location = useLocation()
   const isInitialRender = useRef(true)
 
   useEffect(() => {
@@ -27,23 +33,34 @@ const CarTable = () => {
 
     const updateData = async () => {
       setTableLoading(true)
-      const searchParams: { [key: string]: string } = {}
-      searchParams.page = `${carsPage!.page}`
-      searchParams.size = `${carsPage!.size}`
+      const searchParams = parseParams(new URLSearchParams(location.search))
+      if (page !== null) {
+        searchParams.page = `${page}`
+      }
+      if (size !== null) {
+        searchParams.size = `${size}`
+      }
+      if (sort !== null) {
+        searchParams.sort = sort
+      }
 
       try {
-        const carsResponse = await api.get(
-          `/admin/cars?${new URLSearchParams(searchParams)}`,
+        const carResponse = await api.get(
+          Object.keys(searchParams).length > 0
+            ? `/admin/cars?${new URLSearchParams(searchParams).toString()}`
+            : '/admin/cars',
           { headers: { Authorization: `Bearer ${token}` } }
         )
 
-        const resCars = await carsResponse.json()
+        const resCars = await carResponse.json()
 
-        if (!carsResponse.ok) {
+        if (!carResponse.ok) {
           setCarsNotFound(resCars)
           setCars(null)
-        } else if (carsResponse.ok) {
+          setCarsPage(null)
+        } else if (carResponse.ok) {
           setCars(resCars.data)
+          setCarsPage(resCars.paging)
           setCarsNotFound(null)
         }
       } catch {
@@ -52,13 +69,14 @@ const CarTable = () => {
           message: 'Something went wrong!',
         })
         setCars(null)
+        setCarsPage(null)
       } finally {
         setTableLoading(false)
       }
     }
     updateData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [carsPage])
+  }, [size, sort, page])
 
   return (
     <>
@@ -73,46 +91,247 @@ const CarTable = () => {
           ) : (
             <table className="w-full min-w-max table-fixed">
               <thead>
-                <tr className="grid-cols-28 grid bg-darkblue-100">
+                <tr className="grid grid-cols-28 bg-darkblue-100">
                   <th className="col-span-1 px-4 py-3 text-sm">No</th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Name
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Name{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(sort === 'name' ? '-name' : 'name')
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Category
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Category{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(sort === 'category' ? '-category' : 'category')
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Price
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Price{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(sort === 'price' ? '-price' : 'price')
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Created at
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Created at{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(
+                          sort === 'created_at' ? '-created_at' : 'created_at'
+                        )
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Updated at
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Updated at{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(
+                          sort === 'updated_at' ? '-updated_at' : 'updated_at'
+                        )
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Deleted at
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Deleted at{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(
+                          sort === 'deleted_at' ? '-deleted_at' : 'deleted_at'
+                        )
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Created by
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Created by{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(
+                          sort === 'created_by' ? '-created_by' : 'created_by'
+                        )
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Updated by
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Updated by{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(
+                          sort === 'updated_by' ? '-updated_by' : 'updated_by'
+                        )
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
-                  <th className="col-span-3 px-4 py-3 text-start text-sm">
-                    Deleted by
+                  <th className="col-span-3 flex justify-between px-4 py-3 text-start text-sm">
+                    Deleted by{' '}
+                    <button
+                      className="flex h-5 flex-col py-1"
+                      onClick={() =>
+                        setSort(
+                          sort === 'deleted_by' ? '-deleted_by' : 'deleted_by'
+                        )
+                      }
+                    >
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronUp />
+                      </IconContext.Provider>
+                      <IconContext.Provider
+                        value={{
+                          style: { strokeWidth: '5px' },
+                        }}
+                      >
+                        <FiChevronDown />
+                      </IconContext.Provider>
+                    </button>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {cars ? (
                   cars.map((car, keyIdx) => (
-                    <tr key={keyIdx} className="grid-cols-28 grid">
+                    <tr key={keyIdx} className="grid grid-cols-28">
                       <td className="col-span-1 px-4 py-3 text-center text-sm">
                         {keyIdx + 1}
                       </td>
                       <td className="col-span-3 px-4 py-3 text-start text-sm">
-                        {`${car.model} ${car.manufacture}`}
+                        {`${car.manufacture} ${car.model}`}
                       </td>
                       <td className="col-span-3 px-4 py-3 text-start text-sm">
                         {car.category}
@@ -135,13 +354,13 @@ const CarTable = () => {
                           ? `${new Date(car.deleted_at).toLocaleString()}`
                           : '-'}
                       </td>
-                      <td className="col-span-3 px-4 py-3 text-start text-sm">
+                      <td className="col-span-3 truncate px-4 py-3 text-start text-sm">
                         {car.created_by}
                       </td>
-                      <td className="col-span-3 px-4 py-3 text-start text-sm">
+                      <td className="col-span-3 truncate px-4 py-3 text-start text-sm">
                         {car.updated_by ? `${car.updated_by}` : '-'}
                       </td>
-                      <td className="col-span-3 px-4 py-3 text-start text-sm">
+                      <td className="col-span-3 truncate px-4 py-3 text-start text-sm">
                         {car.deleted_by ? `${car.deleted_by}` : '-'}
                       </td>
                     </tr>
@@ -157,7 +376,7 @@ const CarTable = () => {
             </table>
           )}
         </div>
-        <SkipPage paging={carsPage!} setPaging={setCarsPage} />
+        <SkipPage paging={carsPage} />
       </section>
     </>
   )

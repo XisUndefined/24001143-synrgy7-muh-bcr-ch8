@@ -1,4 +1,3 @@
-// import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './index.css'
@@ -17,7 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <NavbarProvider>
           <Routes>
             {/* <Route path="/" element={<RootLayout />} /> */}
-            <Route path="" element={<ProtectedRoute />}>
+            <Route path="/" element={<ProtectedRoute />}>
               <Route index element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/cars" element={<Cars />} />

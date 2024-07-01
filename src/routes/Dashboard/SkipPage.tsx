@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
+import useTable from '../../hooks/useTable'
 
 type Paging = {
   page: number
@@ -7,25 +8,31 @@ type Paging = {
   size: number
 }
 
-const SkipPage = ({
-  paging,
-  setPaging,
-}: {
-  paging: Paging
-  setPaging: React.Dispatch<React.SetStateAction<Paging | null>>
-}) => {
+const SkipPage = ({ paging }: { paging: Paging | null }) => {
   const [sizeDropdown, setSizeDropdown] = useState<boolean>(false)
   const [pageDropdown, setPageDropdown] = useState<boolean>(false)
-  const [internalSize, setInternalSize] = useState<number>(paging.size)
-  const [internalPage, setInternalPage] = useState<number>(paging.page)
+  const [internalPage, setInternalPage] = useState<number | null>(
+    paging ? paging.page : null
+  )
+  const [internalSize, setInternalSize] = useState<number | null>(
+    paging ? paging.size : null
+  )
+  const { setPage, setSize } = useTable()
+  const isInitialRender = useRef(true)
+
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false
+      return
+    }
+    setInternalPage(paging ? paging.page : null)
+    setInternalSize(paging ? paging.size : null)
+  }, [paging])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setPaging({
-      page: internalPage,
-      total_page: paging.total_page,
-      size: internalSize,
-    })
+    setPage(internalPage)
+    setSize(internalSize)
   }
 
   return (
@@ -34,20 +41,25 @@ const SkipPage = ({
         <div className="flex gap-6">
           <div className="relative flex w-14 select-none flex-wrap gap-2">
             <p className="font-display text-xs font-light">Limit</p>
-            <span className="flex rounded-sm border border-neutral-300 px-3 py-2">
+            <span
+              className="flex cursor-pointer rounded-sm border border-neutral-300 px-3 py-2"
+              onClick={() => {
+                if (internalSize) {
+                  setSizeDropdown(!sizeDropdown)
+                }
+              }}
+            >
               <input
                 id="size"
                 type="number"
                 className="w-full font-display text-xs font-medium text-neutral-500 focus:outline-none"
-                value={internalSize}
-                placeholder={`${paging.size}`}
-                min={1}
+                value={internalSize ? internalSize : 10}
+                min={10}
                 max={50}
                 readOnly
               />
               <FiChevronDown
                 className={`text-xl text-neutral-300 transition-all duration-300 ease-in-out ${sizeDropdown ? 'rotate-180' : ''}`}
-                onClick={() => setSizeDropdown(!sizeDropdown)}
               />
             </span>
             {sizeDropdown && (
@@ -98,20 +110,25 @@ const SkipPage = ({
           <div className="relative flex select-none items-end">
             <div className="flex w-20 flex-wrap gap-2">
               <p className="font-display text-xs font-light">Jump to page</p>
-              <span className="flex w-full rounded-sm border border-neutral-300 px-3 py-2">
+              <span
+                className="flex w-full cursor-pointer rounded-sm border border-neutral-300 px-3 py-2"
+                onClick={() => {
+                  if (internalPage) {
+                    setPageDropdown(!pageDropdown)
+                  }
+                }}
+              >
                 <input
                   id="page"
                   type="number"
                   className="w-full font-display text-xs font-medium text-neutral-500 focus:outline-none"
-                  placeholder={`${paging.page}`}
-                  value={internalPage}
+                  value={internalPage ? internalPage : 1}
                   min={1}
-                  max={`${paging.total_page}`}
+                  max={paging ? paging.total_page : 1}
                   readOnly
                 />
                 <FiChevronDown
                   className={`text-xl text-neutral-300 transition-transform duration-300 ease-in-out ${pageDropdown ? 'rotate-180' : ''}`}
-                  onClick={() => setPageDropdown(!pageDropdown)}
                 />
               </span>
             </div>
@@ -123,7 +140,7 @@ const SkipPage = ({
             </button>
             {pageDropdown && (
               <div className="absolute top-16 max-h-28 w-20 overflow-auto rounded-sm border border-neutral-300 bg-neutral-100 transition-all duration-300 ease-in-out">
-                {[...Array(paging.total_page)].map((_, pageIdx) => (
+                {[...Array(paging!.total_page)].map((_, pageIdx) => (
                   <button
                     key={pageIdx}
                     className="w-full px-3 py-2 text-start font-display text-xs"

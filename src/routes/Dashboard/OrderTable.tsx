@@ -1,17 +1,17 @@
-// import { useState } from 'react'
 import useDashboard from '../../hooks/useDashboard'
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { IconContext } from 'react-icons'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import useAuth from '../../hooks/useAuth'
 import api from '../../api/api'
 import Loading from '../../components/Loading'
 import SkipPage from './SkipPage'
+import useTable from '../../hooks/useTable'
+import { useLocation } from 'react-router-dom'
 
 const OrderTable = () => {
-  const [tableLoading, setTableLoading] = useState(false)
-  const [sort, setSort] = useState<string | null>(null)
-
+  const { tableLoading, setTableLoading, page, size, sort, setSort } =
+    useTable()
   const {
     orders,
     ordersNotFound,
@@ -19,8 +19,10 @@ const OrderTable = () => {
     setOrdersNotFound,
     ordersPage,
     setOrdersPage,
+    parseParams,
   } = useDashboard()
   const { token } = useAuth()
+  const location = useLocation()
   const isInitialRender = useRef(true)
 
   useEffect(() => {
@@ -31,16 +33,22 @@ const OrderTable = () => {
 
     const updateData = async () => {
       setTableLoading(true)
-      const searchParams: { [key: string]: string } = {}
+      const searchParams = parseParams(new URLSearchParams(location.search))
+      if (page !== null) {
+        searchParams.page = `${page}`
+      }
+      if (size !== null) {
+        searchParams.size = `${size}`
+      }
       if (sort !== null) {
         searchParams.sort = sort
       }
-      searchParams.page = `${ordersPage!.page}`
-      searchParams.size = `${ordersPage!.size}`
 
       try {
         const orderResponse = await api.get(
-          `/order?${new URLSearchParams(searchParams)}`,
+          Object.keys(searchParams).length > 0
+            ? `/admin/order?${new URLSearchParams(searchParams).toString()}`
+            : '/admin/order',
           { headers: { Authorization: `Bearer ${token}` } }
         )
 
@@ -49,8 +57,10 @@ const OrderTable = () => {
         if (!orderResponse.ok) {
           setOrdersNotFound(resOrders)
           setOrders(null)
+          setOrdersPage(null)
         } else if (orderResponse.ok) {
           setOrders(resOrders.data)
+          setOrdersPage(resOrders.paging)
           setOrdersNotFound(null)
         }
       } catch {
@@ -59,6 +69,7 @@ const OrderTable = () => {
           message: 'Something went wrong!',
         })
         setOrders(null)
+        setOrdersPage(null)
       } finally {
         setTableLoading(false)
       }
@@ -66,7 +77,7 @@ const OrderTable = () => {
     updateData()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ordersPage, sort])
+  }, [size, sort, page])
 
   return (
     <>
@@ -240,7 +251,7 @@ const OrderTable = () => {
                       <td className="col-span-1 px-4 py-3 text-center text-sm">
                         {keyIdx + 1}
                       </td>
-                      <td className="col-span-3 line-clamp-1 px-4 py-3 text-start text-sm">
+                      <td className="col-span-3 truncate px-4 py-3 text-start text-sm">
                         {order.email}
                       </td>
                       <td className="col-span-3 px-4 py-3 text-start text-sm">
@@ -271,7 +282,7 @@ const OrderTable = () => {
             </table>
           )}
         </div>
-        <SkipPage paging={ordersPage!} setPaging={setOrdersPage} />
+        <SkipPage paging={ordersPage} />
       </section>
     </>
   )

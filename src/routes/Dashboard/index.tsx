@@ -8,8 +8,7 @@ import useAuth from '../../hooks/useAuth'
 import { useEffect } from 'react'
 import api from '../../api/api'
 import CarTable from './CarTable'
-// import { useEffect } from 'react'
-// import api from '../../api/api'
+import TableProvider from '../../contexts/TableProvider'
 
 const Dashboard = () => {
   const location = useLocation()
@@ -63,6 +62,7 @@ const Dashboard = () => {
 
           if (!carResponse.ok) {
             setCarsNotFound(resCars)
+            setCarsPage(null)
             setCars(null)
           } else if (carResponse.ok) {
             setCars(resCars.data)
@@ -71,6 +71,7 @@ const Dashboard = () => {
           }
           if (!orderResponse.ok) {
             setOrdersNotFound(resOrders)
+            setOrdersPage(null)
             setOrders(null)
           } else if (orderResponse.ok) {
             setOrders(resOrders.data)
@@ -79,7 +80,17 @@ const Dashboard = () => {
           }
         } catch {
           setCars(null)
+          setCarsPage(null)
+          setCarsNotFound({
+            status: 'error',
+            message: 'Something went wrong!',
+          })
           setOrders(null)
+          setOrdersPage(null)
+          setOrdersNotFound({
+            status: 'error',
+            message: 'Something went wrong!',
+          })
         } finally {
           setIsLoading(false)
         }
@@ -95,8 +106,12 @@ const Dashboard = () => {
   ) : (
     <RootLayout>
       <Breadcrumb />
-      <OrderTable />
-      <CarTable />
+      <TableProvider>
+        <OrderTable />
+      </TableProvider>
+      <TableProvider>
+        <CarTable />
+      </TableProvider>
     </RootLayout>
   )
 }
