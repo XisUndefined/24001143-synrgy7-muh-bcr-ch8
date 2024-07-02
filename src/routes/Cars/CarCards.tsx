@@ -1,9 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import Card from './Card'
+import Pagination from '../../components/Pagination'
+import useDashboard from '../../hooks/useDashboard'
 
 const CarCards = () => {
   const { category } = useParams()
   const navigate = useNavigate()
+  const { carsPage } = useDashboard()
 
   return (
     <>
@@ -37,9 +40,15 @@ const CarCards = () => {
             </button>
           </div>
           <Card />
-          {/* <div className='w-full my-6 flex flex-wrap'>
-
-          </div> */}
+          <div className="flex w-full justify-center">
+            <Pagination
+              page={carsPage ? carsPage.page : 1}
+              total_page={carsPage ? carsPage.total_page : 1}
+              handlePageClick={(pageNumber: number) =>
+                navigate(`?page=${pageNumber}`)
+              }
+            />
+          </div>
         </div>
       </section>
     </>

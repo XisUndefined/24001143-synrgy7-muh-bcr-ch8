@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
 import useTable from '../../hooks/useTable'
+import Pagination from '../../components/Pagination'
 
 type Paging = {
   page: number
@@ -36,7 +37,7 @@ const TableNavigation = ({ paging }: { paging: Paging | null }) => {
   }
 
   return (
-    <div className="w-full overflow-x-clip">
+    <div className="flex w-full items-end justify-between gap-6 overflow-x-auto">
       <form onSubmit={handleSubmit}>
         <div className="flex gap-6">
           <div className="relative flex w-14 select-none flex-wrap gap-2">
@@ -158,6 +159,11 @@ const TableNavigation = ({ paging }: { paging: Paging | null }) => {
           </div>
         </div>
       </form>
+      <Pagination
+        page={paging ? paging.page : 1}
+        total_page={paging ? paging.total_page : 1}
+        handlePageClick={(pageNumber: number) => setPage(pageNumber)}
+      />
     </div>
   )
 }
