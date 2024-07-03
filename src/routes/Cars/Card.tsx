@@ -3,7 +3,7 @@ import useDashboard from '../../hooks/useDashboard'
 import { Link, useLocation } from 'react-router-dom'
 
 const Card = () => {
-  const { cars } = useDashboard()
+  const { cars, setSelectedCarId } = useDashboard()
   const location = useLocation()
   return (
     <>
@@ -60,7 +60,13 @@ const Card = () => {
                   </span>
                 </article>
                 <span className="flex w-full gap-4">
-                  <button className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-danger bg-neutral-100 px-3 py-2 text-sm font-bold text-danger">
+                  <button
+                    className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-danger bg-neutral-100 px-3 py-2 text-sm font-bold text-danger"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setSelectedCarId(car.id)
+                    }}
+                  >
                     <FiTrash />
                     Delete
                   </button>

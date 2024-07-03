@@ -22,6 +22,8 @@ const useDashboard = () => {
     setOrdersPage,
     carsPage,
     setCarsPage,
+    selectedCarId,
+    setSelectedCarId,
   } = context
   return {
     orders,
@@ -39,6 +41,8 @@ const useDashboard = () => {
     setOrdersPage,
     carsPage,
     setCarsPage,
+    selectedCarId,
+    setSelectedCarId,
   }
 }
 

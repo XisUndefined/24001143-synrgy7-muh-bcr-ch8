@@ -67,6 +67,8 @@ type DashboardContextType = {
   parseParams: (params: URLSearchParams) => {
     [key: string]: string
   }
+  selectedCarId: string | null
+  setSelectedCarId: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export const DashboardContext = createContext<DashboardContextType | null>(null)
@@ -79,6 +81,7 @@ const DashboardProvider = ({ children }: { children: ReactNode }) => {
   const [carsNotFound, setCarsNotFound] = useState<NotFound | null>(null)
   const [ordersNotFound, setOrdersNotFound] = useState<NotFound | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [selectedCarId, setSelectedCarId] = useState<string | null>(null)
 
   const parseParams = (params: URLSearchParams) => {
     const searchParams: { [key: string]: string } = {}
@@ -108,6 +111,8 @@ const DashboardProvider = ({ children }: { children: ReactNode }) => {
         setOrdersPage,
         carsPage,
         setCarsPage,
+        selectedCarId,
+        setSelectedCarId,
       }}
     >
       {children}

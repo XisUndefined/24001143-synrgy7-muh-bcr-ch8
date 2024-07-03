@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
 import { FiChevronDown, FiX } from 'react-icons/fi'
 import 'react-quill/dist/quill.snow.css'
 import ReactQuill from 'react-quill'
+import { useNavigate } from 'react-router-dom'
+import { DevTool } from '@hookform/devtools'
 
 type CarFormInputs = {
   manufacture: string
@@ -70,13 +72,13 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
   const [priceDisplay, setPriceDisplay] = useState<string>(
     car ? `${car.rent_per_day.toLocaleString()}` : ''
   )
-
-  console.log(car)
+  const submitRef = useRef<() => void>()
+  const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
     setValue,
     trigger,
     control,
@@ -142,7 +144,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
     const numericValue = parseInt(rawValue)
 
     if (!isNaN(numericValue)) {
-      setValue('rent_per_day', numericValue)
+      setValue('rent_per_day', numericValue, { shouldDirty: true })
       setPriceDisplay(numericValue.toLocaleString('id-ID'))
     } else {
       setPriceDisplay('')
@@ -173,7 +175,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
   }, [register])
 
   const onEditorStateChange = (editorState: string) => {
-    setValue('description', editorState)
+    setValue('description', editorState, { shouldDirty: true })
   }
 
   return (
@@ -327,7 +329,9 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
                   className="w-full p-3 text-start hover:bg-neutral-300"
                   onClick={(e) => {
                     e.preventDefault()
-                    setValue('driver_service', 'Dengan Sopir')
+                    setValue('driver_service', 'Dengan Sopir', {
+                      shouldDirty: true,
+                    })
                     setDriverServiceDropdown(false)
                     trigger('driver_service')
                   }}
@@ -338,7 +342,9 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
                   className="w-full p-3 text-start hover:bg-neutral-300"
                   onClick={(e) => {
                     e.preventDefault()
-                    setValue('driver_service', 'Tanpa Sopir')
+                    setValue('driver_service', 'Tanpa Sopir', {
+                      shouldDirty: true,
+                    })
                     setDriverServiceDropdown(false)
                     trigger('driver_service')
                   }}
@@ -470,7 +476,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
                   className="w-full p-3 text-start capitalize hover:bg-neutral-300"
                   onClick={(e) => {
                     e.preventDefault()
-                    setValue('category', 'small')
+                    setValue('category', 'small', { shouldDirty: true })
                     setCategoryDropdown(false)
                     trigger('category')
                   }}
@@ -481,7 +487,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
                   className="w-full p-3 text-start capitalize hover:bg-neutral-300"
                   onClick={(e) => {
                     e.preventDefault()
-                    setValue('category', 'medium')
+                    setValue('category', 'medium', { shouldDirty: true })
                     setCategoryDropdown(false)
                     trigger('category')
                   }}
@@ -492,7 +498,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
                   className="w-full p-3 text-start capitalize hover:bg-neutral-300"
                   onClick={(e) => {
                     e.preventDefault()
-                    setValue('category', 'large')
+                    setValue('category', 'large', { shouldDirty: true })
                     setCategoryDropdown(false)
                     trigger('category')
                   }}
@@ -647,8 +653,36 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
             )}
           </div>
         </div>
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          className="hidden"
+          ref={(el) => {
+            if (el) submitRef.current = handleSubmit(onSubmit)
+          }}
+        ></button>
       </form>
+      <div className="mt-4 flex gap-4">
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            navigate(-1)
+          }}
+          className="rounded-sm border border-darkblue-700 bg-neutral-100 px-3 py-2 text-sm font-bold text-darkblue-700 hover:border-darkblue-900 hover:text-darkblue-900 active:border-darkblue-500 active:text-darkblue-500"
+        >
+          Cancel
+        </button>
+        <button
+          className="rounded-sm bg-darkblue-700 px-3 py-2 text-sm font-bold text-neutral-100 hover:border-darkblue-900 hover:bg-darkblue-900 active:border-darkblue-500 active:bg-darkblue-500 disabled:bg-darkblue-100"
+          onClick={(e) => {
+            e.preventDefault()
+            submitRef.current && submitRef.current()
+          }}
+          disabled={!isValid || !isDirty}
+        >
+          Save
+        </button>
+      </div>
+      <DevTool control={control} />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useLocation, useParams } from 'react-router-dom'
 import useDashboard from '../../hooks/useDashboard'
 import useAuth from '../../hooks/useAuth'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import api from '../../api/api'
 import Loading from '../../components/Loading'
 import RootLayout from '../../layouts/RootLayout'
@@ -11,9 +11,17 @@ import CarCards from './CarCards'
 const Cars = () => {
   const location = useLocation()
   const { category } = useParams()
-  const { setCars, setCarsPage, setCarsNotFound, setIsLoading, isLoading } =
-    useDashboard()
+  const {
+    setCars,
+    setCarsPage,
+    setCarsNotFound,
+    setIsLoading,
+    isLoading,
+    selectedCarId,
+    setSelectedCarId,
+  } = useDashboard()
   const { token } = useAuth()
+  const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,18 +83,61 @@ const Cars = () => {
         }
       }
     }
-    fetchData()
 
+    const handleClick = (e: MouseEvent) => {
+      if (containerRef) {
+        if (containerRef.current === e.target) {
+          setSelectedCarId(null)
+        }
+      }
+    }
+    window.addEventListener('click', handleClick)
+
+    fetchData()
+    return () => window.removeEventListener('click', handleClick)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
   return isLoading ? (
     <Loading size="5vw" bgSize="100vh" />
   ) : (
-    <RootLayout>
-      <Breadcrumb />
-      <CarCards />
-    </RootLayout>
+    <>
+      {selectedCarId && (
+        <div
+          ref={containerRef}
+          className="overlay z-[9999] flex items-center justify-center"
+        >
+          <div className="flex h-fit w-full max-w-96 flex-wrap items-center justify-center gap-6 rounded-md bg-neutral-100 px-8 py-6 shadow-low max-md:mx-6 sm:w-1/2">
+            <img src="img/delete-car-modal-image.png" alt="delete-car-modal" />
+            <div className="flex w-full flex-wrap gap-4 text-center">
+              <p className="w-full text-base font-bold">Menghapus Data Mobil</p>
+              <p className="w-full text-sm font-light">
+                Setelah dihapus, data mobil tidak dapat dikembalikan, Yakin
+                ingin menghapus?
+              </p>
+            </div>
+            <div className="flex justify-center gap-4">
+              <button className="min-w-20 rounded-sm bg-darkblue-700 px-3 py-2 text-sm font-bold text-neutral-100 hover:border-darkblue-900 hover:bg-darkblue-900 active:border-darkblue-500 active:bg-darkblue-500 disabled:bg-darkblue-100">
+                Ya
+              </button>
+              <button
+                className="min-w-20 rounded-sm border border-darkblue-700 bg-neutral-100 px-3 py-2 text-sm font-bold text-darkblue-700 hover:border-darkblue-900 hover:text-darkblue-900 active:border-darkblue-500 active:text-darkblue-500"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setSelectedCarId(null)
+                }}
+              >
+                Tidak
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <RootLayout>
+        <Breadcrumb />
+        <CarCards />
+      </RootLayout>
+    </>
   )
 }
 
