@@ -22,6 +22,7 @@ type Car = {
   manufacture: string
   model: string
   transmission: string
+  plate: string
   year: number
   driver_service: boolean
   rent_per_day: number

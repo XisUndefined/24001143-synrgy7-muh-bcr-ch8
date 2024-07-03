@@ -1,6 +1,5 @@
 import React from 'react'
 import { FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
-// import useTable from '../hooks/useTable'
 
 interface PagingProps {
   page: number
@@ -13,12 +12,6 @@ const Pagination: React.FC<PagingProps> = ({
   total_page,
   handlePageClick,
 }) => {
-  // const { setPage } = useTable()
-
-  // const handlePageClick = (pageNumber: number) => {
-  //   setPage(pageNumber)
-  // }
-
   const renderPageButtons = () => {
     const buttons = []
     if (total_page <= 5) {

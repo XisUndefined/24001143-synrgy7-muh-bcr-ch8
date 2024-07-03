@@ -9,6 +9,8 @@ import AuthProvider from './contexts/AuthProvider'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './routes/Login'
 import Logout from './routes/Logout'
+import NewCar from './routes/NewCar'
+import EditCar from './routes/EditCar'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -21,6 +23,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/cars" element={<Cars />} />
               <Route path="/cars/category/:category" element={<Cars />} />
+              <Route path="/cars/create" element={<NewCar />} />
+              <Route path="/cars/:id" element={<EditCar />} />
               <Route path="/logout" element={<Logout />} />
             </Route>
             <Route path="/login" element={<Login />} />

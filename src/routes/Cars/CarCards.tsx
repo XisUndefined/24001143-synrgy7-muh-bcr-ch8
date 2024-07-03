@@ -1,7 +1,8 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Card from './Card'
 import Pagination from '../../components/Pagination'
 import useDashboard from '../../hooks/useDashboard'
+import { FiPlus } from 'react-icons/fi'
 
 const CarCards = () => {
   const { category } = useParams()
@@ -11,7 +12,16 @@ const CarCards = () => {
   return (
     <>
       <section className="my-4 w-full">
-        <h2 className="text-xl font-bold">List Car</h2>
+        <div className="flex w-full justify-between gap-6">
+          <h2 className="text-xl font-bold">List Car</h2>
+          <Link
+            to={'/cars/create'}
+            className="flex items-center gap-3 rounded-sm bg-darkblue-700 px-3 py-2 text-sm font-bold text-neutral-100 hover:bg-darkblue-900 active:bg-darkblue-500 disabled:bg-darkblue-100"
+          >
+            <FiPlus strokeWidth={4} />
+            Add New Car
+          </Link>
+        </div>
         <div className="my-4 w-full">
           <div className="flex gap-4 overflow-auto">
             <button

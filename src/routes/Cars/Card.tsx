@@ -1,6 +1,6 @@
 import { FiClock, FiEdit, FiTrash, FiUsers } from 'react-icons/fi'
 import useDashboard from '../../hooks/useDashboard'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const Card = () => {
   const { cars } = useDashboard()
@@ -64,10 +64,14 @@ const Card = () => {
                     <FiTrash />
                     Delete
                   </button>
-                  <button className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-limegreen-700 bg-limegreen-700 px-3 py-2 text-sm font-bold text-neutral-100">
+                  <Link
+                    to={`/cars/${car.id}`}
+                    state={{ car }}
+                    className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-limegreen-700 bg-limegreen-700 px-3 py-2 text-sm font-bold text-neutral-100"
+                  >
                     <FiEdit />
                     Edit
-                  </button>
+                  </Link>
                 </span>
               </div>
             </div>

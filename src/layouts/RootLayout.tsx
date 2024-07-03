@@ -161,7 +161,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             )}
           </div>
         </header>
-        <main className="h-full w-full overflow-auto px-6 py-8">
+        <main className="h-full w-full overflow-auto bg-[#f4f5f7] px-6 py-8">
           {children}
         </main>
       </div>

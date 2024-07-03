@@ -21,7 +21,11 @@ const Breadcrumb = () => {
               to={`/${pathnames.slice(0).join('/')}`}
               className={`first-letter:capitalize ${pathnames.slice(-1)[0] === path ? 'font-display font-light' : ''} hover:underline`}
             >
-              {path}
+              {/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+                path
+              )
+                ? 'Edit Car'
+                : path}
             </Link>
           ) : (
             <p
