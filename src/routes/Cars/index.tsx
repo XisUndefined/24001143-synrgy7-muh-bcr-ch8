@@ -1,7 +1,7 @@
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import useDashboard from '../../hooks/useDashboard'
 import useAuth from '../../hooks/useAuth'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import api from '../../api/api'
 import Loading from '../../components/Loading'
 import RootLayout from '../../layouts/RootLayout'
@@ -11,6 +11,7 @@ import CarCards from './CarCards'
 const Cars = () => {
   const location = useLocation()
   const { category } = useParams()
+  const [showModal, setShowModal] = useState<boolean>(false)
   const {
     setCars,
     setCarsPage,
@@ -21,7 +22,42 @@ const Cars = () => {
     setSelectedCarId,
   } = useDashboard()
   const { token } = useAuth()
+  const navigate = useNavigate()
   const containerRef = useRef<HTMLDivElement | null>(null)
+
+  const handleDelete = async () => {
+    if (!isLoading) {
+      setIsLoading(true)
+    }
+    try {
+      const resCar = await api.delete(`/admin/cars/${selectedCarId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      const response = await resCar.json()
+      if (!resCar) {
+        setSelectedCarId(null)
+        navigate('/cars', {
+          replace: true,
+          state: { error: response.message },
+        })
+      } else {
+        setSelectedCarId(null)
+        navigate('/cars', {
+          replace: true,
+          state: { message: 'Data Berhasil Dihapus' },
+        })
+      }
+    } catch {
+      setSelectedCarId(null)
+      navigate('/cars', {
+        replace: true,
+        state: { error: 'Something Went Wrong' },
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,6 +134,20 @@ const Cars = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
+  useEffect(() => {
+    if (
+      location.state?.error ||
+      location.state?.message ||
+      location.state?.success
+    ) {
+      setShowModal(true)
+      const timer = setTimeout(() => {
+        setShowModal(false)
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [location.state])
+
   return isLoading ? (
     <Loading size="5vw" bgSize="100vh" />
   ) : (
@@ -117,7 +167,13 @@ const Cars = () => {
               </p>
             </div>
             <div className="flex justify-center gap-4">
-              <button className="min-w-20 rounded-sm bg-darkblue-700 px-3 py-2 text-sm font-bold text-neutral-100 hover:border-darkblue-900 hover:bg-darkblue-900 active:border-darkblue-500 active:bg-darkblue-500 disabled:bg-darkblue-100">
+              <button
+                className="min-w-20 rounded-sm bg-darkblue-700 px-3 py-2 text-sm font-bold text-neutral-100 hover:border-darkblue-900 hover:bg-darkblue-900 active:border-darkblue-500 active:bg-darkblue-500 disabled:bg-darkblue-100"
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleDelete()
+                }}
+              >
                 Ya
               </button>
               <button
@@ -134,6 +190,13 @@ const Cars = () => {
         </div>
       )}
       <RootLayout>
+        {showModal && (
+          <div
+            className={`mx-auto flex w-full rounded-md ${showModal ? 'translate-y-20' : '-translate-y-20'} ${location.state ? (location.state.error ? 'bg-danger' : location.state.message ? 'bg-black' : location.state.success ? 'bg-success' : '') : ''} px-4 py-3 text-center font-display text-base font-medium text-neutral-100 shadow-high transition-all ease-in-out md:w-1/2`}
+          >
+            <p className="w-full">{`${location.state ? (location.state.error ? location.state.error : location.state.message ? location.state.message : location.state.success ? location.state.success : '') : ''}`}</p>
+          </div>
+        )}
         <Breadcrumb />
         <CarCards />
       </RootLayout>

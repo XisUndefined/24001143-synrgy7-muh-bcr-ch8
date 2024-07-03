@@ -61,11 +61,12 @@ const Card = () => {
                 </article>
                 <span className="flex w-full gap-4">
                   <button
-                    className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-danger bg-neutral-100 px-3 py-2 text-sm font-bold text-danger"
+                    className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-danger bg-neutral-100 px-3 py-2 text-sm font-bold text-danger disabled:border-opacity-30 disabled:text-opacity-30"
                     onClick={(e) => {
                       e.preventDefault()
                       setSelectedCarId(car.id)
                     }}
+                    disabled={car.deleted_at !== null}
                   >
                     <FiTrash />
                     Delete

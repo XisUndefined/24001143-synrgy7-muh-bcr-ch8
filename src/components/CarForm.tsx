@@ -50,8 +50,14 @@ type Car = {
   updated_at: string
 }
 
+type Error = {
+  status: string
+  message: string
+}
+
 interface FormProps {
   onSubmit: SubmitHandler<CarFormInputs>
+  error: Error | null
   car?: Car
 }
 
@@ -65,7 +71,7 @@ const measureTextWidth = (text: string, font: string) => {
   return 0
 }
 
-const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
+const CarForm: React.FC<FormProps> = ({ onSubmit, error, car }) => {
   const [driverServiceDropdown, setDriverServiceDropdown] =
     useState<boolean>(false)
   const [categoryDropdown, setCategoryDropdown] = useState<boolean>(false)
@@ -78,7 +84,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid, isDirty, isSubmitting },
     setValue,
     trigger,
     control,
@@ -176,6 +182,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
 
   const onEditorStateChange = (editorState: string) => {
     setValue('description', editorState, { shouldDirty: true })
+    trigger('description')
   }
 
   return (
@@ -661,6 +668,11 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
           }}
         ></button>
       </form>
+      {error && (
+        <div className="mt-4 flex w-full rounded-md border border-danger bg-danger bg-opacity-10 px-4 py-3 text-xs font-light text-danger">
+          <p>{error.message}</p>
+        </div>
+      )}
       <div className="mt-4 flex gap-4">
         <button
           onClick={(e) => {
@@ -677,7 +689,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, car }) => {
             e.preventDefault()
             submitRef.current && submitRef.current()
           }}
-          disabled={!isValid || !isDirty}
+          disabled={!isValid || !isDirty || isSubmitting}
         >
           Save
         </button>
