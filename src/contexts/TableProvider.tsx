@@ -55,7 +55,9 @@ const TableProvider = ({
 
     const updateData = async () => {
       setTableLoading(true)
-      const searchParams = parseParams(new URLSearchParams(location.search))
+      const searchParams = parseParams(new URLSearchParams(location.search), [
+        'q',
+      ])
       if (page !== null) {
         searchParams.page = `${page}`
       }

@@ -1,16 +1,10 @@
 import { ReactNode, createContext } from 'react'
 import { Control, FieldErrors } from 'react-hook-form'
-
-type FormValues = {
-  driver_service: string
-  date_range: string
-  time: string
-  capacity?: number
-}
+import { CarSearchFormType } from '../types/car'
 
 export interface CustomerSearchContextType {
-  errors: FieldErrors<FormValues>
-  control: Control<FormValues>
+  errors: FieldErrors<CarSearchFormType>
+  control: Control<CarSearchFormType>
 }
 
 export const CustomerSearchContext = createContext<

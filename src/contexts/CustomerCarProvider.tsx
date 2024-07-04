@@ -5,30 +5,8 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom'
-
-type Car = {
-  id: string
-  manufacture: string
-  model: string
-  transmission: string
-  plate: string
-  year: number
-  driver_service: boolean
-  rent_per_day: number
-  image?: string
-  capacity: number
-  type: string
-  options?: string
-  specs?: string
-  description: string
-  deleted_at?: Date
-}
-
-type Paging = {
-  page: number
-  size: number
-  total_page: number
-}
+import { Car } from '../types/car'
+import { Paging } from '../types/response'
 
 export interface CustomerCarContextType {
   resErrors: Record<string, string | string[]>[] | null

@@ -5,18 +5,11 @@ import {
   removeAuthToken,
   setAuthToken,
 } from '../utils/AuthHelper'
-
-type User = {
-  firstname: string
-  lastname?: string
-  email: string
-  avatar: string
-  role: string
-}
+import { UserProfile } from '../types/user'
 
 export type AuthContextType = {
   isAuthenticated: boolean
-  user: User | null
+  user: UserProfile | null
   login: (token: string) => void
   logout: () => Promise<Response>
   token: string | null
@@ -26,7 +19,7 @@ export const AuthContext = createContext<AuthContextType | null>(null)
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(getAuthToken())
-  const [user, setUser] = useState<User | null>(
+  const [user, setUser] = useState<UserProfile | null>(
     JSON.parse(localStorage.getItem('user') || 'null')
   )
 
