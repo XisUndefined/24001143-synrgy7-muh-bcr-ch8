@@ -11,6 +11,7 @@ type User = {
   lastname?: string
   email: string
   avatar: string
+  role: string
 }
 
 export type AuthContextType = {

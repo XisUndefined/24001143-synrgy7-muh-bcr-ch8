@@ -3,7 +3,7 @@ import useAuth from '../../hooks/useAuth'
 import LoginForm from './LoginForm'
 import { useEffect, useState } from 'react'
 
-const Login = () => {
+const AdminLogin = () => {
   const { isAuthenticated } = useAuth()
   const location = useLocation()
   const [showError, setShowError] = useState(false)
@@ -42,4 +42,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default AdminLogin

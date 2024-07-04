@@ -26,7 +26,57 @@
     }
   }
 
+  .number {
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  .nav-line {
+    @apply my-1 block h-[2px] w-[18px] rounded-sm bg-[#222];
+  }
+
+  .nav-line__active > span:nth-child(1) {
+    @apply rotate-45;
+  }
+
+  .nav-line__active > span:nth-child(3) {
+    @apply -rotate-45;
+  }
+
+  .nav-line__active > span:nth-child(2) {
+    @apply scale-0;
+  }
+
   .overlay {
     @apply fixed h-screen w-screen bg-neutral-900 bg-opacity-60;
+  }
+}
+
+@layer components {
+  .about-card {
+    @apply w-full rounded-lg border-[1px] border-[#d0d0d0] p-6;
+  }
+
+  .testimonial-card {
+    @apply flex w-full flex-wrap items-center justify-center rounded-lg bg-[#f1f3ff] px-10 py-8 sm:max-md:flex-nowrap sm:max-md:gap-11 md:max-lg:flex-wrap lg:flex-nowrap lg:gap-11;
+  }
+
+  .review-img {
+    @apply my-6;
+  }
+
+  .review {
+    @apply flex w-full flex-wrap justify-center gap-2 before:content-[url('./../img/rate.svg')] sm:max-md:justify-start md:max-lg:justify-center lg:justify-start;
+  }
+
+  .accordion {
+    @apply flex w-full items-center justify-between gap-4 p-4 text-start text-sm font-light leading-5 after:content-[url("./../img/chevron-down.svg")];
+  }
+
+  .accordion-collapse {
+    @apply overflow-hidden rounded-b-lg text-sm font-light leading-5;
   }
 }
