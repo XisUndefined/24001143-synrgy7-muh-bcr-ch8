@@ -1,189 +1,145 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
-import { FiChevronDown, FiX } from 'react-icons/fi'
+import React, { useRef } from 'react'
+import { SubmitHandler } from 'react-hook-form'
 import 'react-quill/dist/quill.snow.css'
-import ReactQuill from 'react-quill'
 import { useNavigate } from 'react-router-dom'
-import { DevTool } from '@hookform/devtools'
-
-type CarFormInputs = {
-  manufacture: string
-  model: string
-  transmission: string
-  plate: string
-  year: number
-  driver_service: string
-  rent_per_day: number
-  capacity: number
-  type: string
-  category: string
-  options?: {
-    option: string
-  }[]
-  specs?: {
-    spec: string
-  }[]
-  description: string
-}
-
-type Car = {
-  id: string
-  created_by: string
-  updated_by?: string
-  deleted_by?: string
-  manufacture: string
-  model: string
-  transmission: string
-  plate: string
-  year: number
-  driver_service: boolean
-  rent_per_day: number
-  image?: string
-  capacity: number
-  type: string
-  category: string
-  options?: string
-  specs?: string
-  description: string
-  deleted_at?: string
-  created_at: string
-  updated_at: string
-}
-
-type Error = {
-  status: string
-  message: string
-}
-
+import { Car, CarFormType } from '../types/car'
+import { ResponseError } from '../types/response'
+import useCarForm from '../hooks/useCarForm'
+import CarManufactureInput from './CarManufactureInput'
+import CarModelInput from './CarModelInput'
+import CarTransmissionInput from './CarTransmissionInput'
+import CarPlateInput from './CarPlateInput'
+import CarYearInput from './CarYearInput'
+import CarDriverServiceInput from './CarDriverServiceInput'
+import CarPriceInput from './CarPriceInput'
+import CarCapacityInput from './CarCapacityInput'
+import CarTypeInput from './CarTypeInput'
+import CarCategoryInput from './CarCategoryInput'
+import CarOptionsInput from './CarOptionsInput'
+import CarSpecsInput from './CarSpecsInput'
+import CarDescriptionInput from './CarDescriptionInput'
+import Spinner from './Spinner'
 interface FormProps {
-  onSubmit: SubmitHandler<CarFormInputs>
-  error: Error | null
+  onSubmit: SubmitHandler<CarFormType>
+  error: ResponseError | null
   car?: Car
 }
 
-const measureTextWidth = (text: string, font: string) => {
-  const canvas = document.createElement('canvas')
-  const context = canvas.getContext('2d')
-  if (context) {
-    context.font = font
-    return context.measureText(text).width
-  }
-  return 0
-}
-
 const CarForm: React.FC<FormProps> = ({ onSubmit, error, car }) => {
-  const [driverServiceDropdown, setDriverServiceDropdown] =
-    useState<boolean>(false)
-  const [categoryDropdown, setCategoryDropdown] = useState<boolean>(false)
-  const [priceDisplay, setPriceDisplay] = useState<string>(
-    car ? `${car.rent_per_day.toLocaleString()}` : ''
-  )
+  // const [driverServiceDropdown, setDriverServiceDropdown] =
+  //   useState<boolean>(false)
+  // const [categoryDropdown, setCategoryDropdown] = useState<boolean>(false)
+  // const [priceDisplay, setPriceDisplay] = useState<string>(
+  //   car ? `${car.rent_per_day.toLocaleString()}` : ''
+  // )
   const submitRef = useRef<() => void>()
   const navigate = useNavigate()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid, isDirty, isSubmitting },
-    setValue,
-    trigger,
-    control,
-    watch,
-  } = useForm<CarFormInputs>({
-    mode: 'onBlur',
-    defaultValues: {
-      manufacture: car ? car.manufacture : '',
-      model: car ? car.model : '',
-      transmission: car ? car.transmission : '',
-      plate: car ? car.plate : '',
-      year: car ? car.year : undefined,
-      driver_service: car
-        ? car.driver_service
-          ? 'Dengan Sopir'
-          : 'Tanpa Sopir'
-        : '',
-      rent_per_day: car ? car.rent_per_day : undefined,
-      capacity: car ? car.capacity : undefined,
-      type: car ? car.type : '',
-      category: car ? car.category : '',
-      options: car
-        ? JSON.parse(car.options ? car.options : '[]').map((option: string) => {
-            return {
-              option,
-            }
-          })
-        : [{ option: '' }],
-      specs: car
-        ? JSON.parse(car.specs ? car.specs : '[]').map((spec: string) => {
-            return {
-              spec,
-            }
-          })
-        : [{ spec: '' }],
-      description: car ? car.description : '',
-    },
-  })
-  const {
-    fields: optionFields,
-    append: appendOption,
-    remove: removeOption,
-  } = useFieldArray({
-    control,
-    name: 'options',
-  })
+  const { handleSubmit, isValid, isDirty, isSubmitting } = useCarForm()
 
-  const {
-    fields: specFields,
-    append: appendSpec,
-    remove: removeSpec,
-  } = useFieldArray({
-    control,
-    name: 'specs',
-  })
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors, isValid, isDirty, isSubmitting },
+  //   setValue,
+  //   trigger,
+  //   control,
+  //   watch,
+  // } = useForm<CarFormType>({
+  //   mode: 'onBlur',
+  //   defaultValues: {
+  //     manufacture: car ? car.manufacture : '',
+  //     model: car ? car.model : '',
+  //     transmission: car ? car.transmission : '',
+  //     plate: car ? car.plate : '',
+  //     year: car ? car.year : undefined,
+  //     driver_service: car
+  //       ? car.driver_service
+  //         ? 'Dengan Sopir'
+  //         : 'Tanpa Sopir'
+  //       : '',
+  //     rent_per_day: car ? car.rent_per_day : undefined,
+  //     capacity: car ? car.capacity : undefined,
+  //     type: car ? car.type : '',
+  //     category: car ? car.category : '',
+  //     options: car
+  //       ? JSON.parse(car.options ? car.options : '[]').map((option: string) => {
+  //           return {
+  //             option,
+  //           }
+  //         })
+  //       : [{ option: '' }],
+  //     specs: car
+  //       ? JSON.parse(car.specs ? car.specs : '[]').map((spec: string) => {
+  //           return {
+  //             spec,
+  //           }
+  //         })
+  //       : [{ spec: '' }],
+  //     description: car ? car.description : '',
+  //   },
+  // })
+  // const {
+  //   fields: optionFields,
+  //   append: appendOption,
+  //   remove: removeOption,
+  // } = useFieldArray({
+  //   control,
+  //   name: 'options',
+  // })
 
-  const optionsValues = watch('options', optionFields)
-  const specsValues = watch('specs', specFields)
-  const editorContent = watch('description')
+  // const {
+  //   fields: specFields,
+  //   append: appendSpec,
+  //   remove: removeSpec,
+  // } = useFieldArray({
+  //   control,
+  //   name: 'specs',
+  // })
 
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value.replace(/\./g, '')
-    const numericValue = parseInt(rawValue)
+  // const optionsValues = watch('options', optionFields)
+  // const specsValues = watch('specs', specFields)
+  // const editorContent = watch('description')
 
-    if (!isNaN(numericValue)) {
-      setValue('rent_per_day', numericValue, { shouldDirty: true })
-      setPriceDisplay(numericValue.toLocaleString('id-ID'))
-    } else {
-      setPriceDisplay('')
-    }
-  }
+  // const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const rawValue = e.target.value.replace(/\./g, '')
+  //   const numericValue = parseInt(rawValue)
 
-  const handlePricePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
-    const pastedData = event.clipboardData.getData('Text')
-    if (!/^\d+$/.test(pastedData)) {
-      event.preventDefault()
-    }
-  }
+  //   if (!isNaN(numericValue)) {
+  //     setValue('rent_per_day', numericValue, { shouldDirty: true })
+  //     setPriceDisplay(numericValue.toLocaleString('id-ID'))
+  //   } else {
+  //     setPriceDisplay('')
+  //   }
+  // }
 
-  const handlePriceKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const isControlA = e.ctrlKey && e.key.toLowerCase() === 'a'
-    const isNumericKey = /^[0-9]$/.test(e.key)
-    const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight']
+  // const handlePricePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+  //   const pastedData = event.clipboardData.getData('Text')
+  //   if (!/^\d+$/.test(pastedData)) {
+  //     event.preventDefault()
+  //   }
+  // }
 
-    if (!isNumericKey && !isControlA && !allowedKeys.includes(e.key)) {
-      e.preventDefault()
-    }
-  }
+  // const handlePriceKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   const isControlA = e.ctrlKey && e.key.toLowerCase() === 'a'
+  //   const isNumericKey = /^[0-9]$/.test(e.key)
+  //   const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight']
 
-  useEffect(() => {
-    register('description', {
-      required: { value: true, message: 'Description is required' },
-    })
-  }, [register])
+  //   if (!isNumericKey && !isControlA && !allowedKeys.includes(e.key)) {
+  //     e.preventDefault()
+  //   }
+  // }
 
-  const onEditorStateChange = (editorState: string) => {
-    setValue('description', editorState, { shouldDirty: true })
-    trigger('description')
-  }
+  // useEffect(() => {
+  //   register('description', {
+  //     required: { value: true, message: 'Description is required' },
+  //   })
+  // }, [register])
+
+  // const onEditorStateChange = (editorState: string) => {
+  //   setValue('description', editorState, { shouldDirty: true })
+  //   trigger('description')
+  // }
 
   return (
     <div className="my-4 w-full">
@@ -191,7 +147,20 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, error, car }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-wrap gap-4 rounded-sm bg-neutral-100 p-4"
       >
-        <div className="flex w-full flex-wrap items-center gap-1 md:grid md:grid-cols-12 md:grid-rows-[1fr_14px]">
+        <CarManufactureInput car={car} />
+        <CarModelInput car={car} />
+        <CarTransmissionInput car={car} />
+        <CarPlateInput car={car} />
+        <CarYearInput car={car} />
+        <CarDriverServiceInput car={car} />
+        <CarPriceInput car={car} />
+        <CarCapacityInput car={car} />
+        <CarTypeInput car={car} />
+        <CarCategoryInput car={car} />
+        <CarOptionsInput car={car} />
+        <CarSpecsInput car={car} />
+        <CarDescriptionInput car={car} />
+        {/* <div className="flex w-full flex-wrap items-center gap-1 md:grid md:grid-cols-12 md:grid-rows-[1fr_14px]">
           <label
             className="inline-block w-full font-display text-xs font-light after:text-danger after:content-['*'] md:col-span-3"
             htmlFor="manufacture"
@@ -397,11 +366,11 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, error, car }) => {
               {errors.rent_per_day.message}
             </p>
           )}
-        </div>
+        </div> */}
 
         {/* TODO: Image file upload */}
 
-        <div className="flex w-full flex-wrap items-center gap-1 md:grid md:grid-cols-12 md:grid-rows-[1fr_14px]">
+        {/* <div className="flex w-full flex-wrap items-center gap-1 md:grid md:grid-cols-12 md:grid-rows-[1fr_14px]">
           <label
             className="inline-block w-full font-display text-xs font-light after:text-danger after:content-['*'] md:col-span-3"
             htmlFor="capacity"
@@ -659,7 +628,7 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, error, car }) => {
               </p>
             )}
           </div>
-        </div>
+        </div> */}
         <button
           type="submit"
           className="hidden"
@@ -691,10 +660,16 @@ const CarForm: React.FC<FormProps> = ({ onSubmit, error, car }) => {
           }}
           disabled={!isValid || !isDirty || isSubmitting}
         >
-          Save
+          {isSubmitting ? (
+            <span className="flex w-8 justify-center">
+              <Spinner size="20px" borderSize="2px" />
+            </span>
+          ) : (
+            'Save'
+          )}
         </button>
       </div>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </div>
   )
 }

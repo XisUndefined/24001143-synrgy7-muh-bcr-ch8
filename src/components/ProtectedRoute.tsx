@@ -5,7 +5,7 @@ const ProtectedRoute = () => {
   const { isAuthenticated, user } = useAuth()
   const navigate = useNavigate()
 
-  if (isAuthenticated && user!.role === 'customer') {
+  if (isAuthenticated && user && user.role === 'customer') {
     navigate('/not-found', { replace: true })
   }
 

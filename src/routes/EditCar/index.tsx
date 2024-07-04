@@ -7,6 +7,7 @@ import api from '../../api/api'
 import useAuth from '../../hooks/useAuth'
 import useDashboard from '../../hooks/useDashboard'
 import Loading from '../../components/Loading'
+import CarFormProvider from '../../contexts/CarFormProvider'
 
 type Car = {
   id: string
@@ -96,16 +97,24 @@ const EditCar = () => {
     reqBody.capacity = Number(`${reqBody.capacity}`)
     if (options) {
       reqBody.options = JSON.stringify(
-        options.map((option) => {
-          return option.option
-        })
+        options
+          .filter((option) => {
+            return option.option.trim() !== ''
+          })
+          .map((option) => {
+            return option.option
+          })
       )
     }
     if (specs) {
       reqBody.specs = JSON.stringify(
-        specs.map((spec) => {
-          return spec.spec
-        })
+        specs
+          .filter((spec) => {
+            return spec.spec.trim() !== ''
+          })
+          .map((spec) => {
+            return spec.spec
+          })
       )
     }
 
@@ -125,7 +134,7 @@ const EditCar = () => {
       if (!resCar.ok) {
         setError(response)
       } else {
-        navigate('/cars', {
+        navigate('/admin/cars', {
           state: { success: 'Data Berhasil Disimpan' },
           replace: true,
         })
@@ -152,12 +161,12 @@ const EditCar = () => {
           const resCar = await carResponse.json()
 
           if (!carResponse.ok) {
-            navigate('/cars', { state: { error: 'Car Data Not Found' } })
+            navigate('/admin/cars', { state: { error: 'Car Data Not Found' } })
           } else {
             setCar(resCar.data)
           }
         } catch {
-          navigate('/cars', { state: { error: 'Something went wrong!' } })
+          navigate('/admin/cars', { state: { error: 'Something went wrong!' } })
         } finally {
           setIsLoading(false)
         }
@@ -176,7 +185,9 @@ const EditCar = () => {
       <Breadcrumb />
       <section className="my-4 w-full">
         <h2 className="text-xl font-bold">Edit Car</h2>
-        <CarForm onSubmit={handleFormSubmit} error={error} car={car as Car} />
+        <CarFormProvider>
+          <CarForm onSubmit={handleFormSubmit} error={error} car={car as Car} />
+        </CarFormProvider>
       </section>
     </RootLayout>
   )

@@ -23,7 +23,7 @@ const AdminLogin = () => {
       <div className="h-dvh w-0 overflow-hidden md:w-1/4 xl:w-3/5">
         <img
           className="h-full object-cover opacity-70"
-          src="img/auth-banner.png"
+          src="../img/auth-banner.png"
         />
       </div>
       <div className="relative flex h-dvh w-full items-center justify-center bg-neutral-100 md:w-3/4 xl:w-2/5">
@@ -38,7 +38,7 @@ const AdminLogin = () => {
       </div>
     </main>
   ) : (
-    <Navigate to={'/'} replace={true} />
+    <Navigate to={'/admin'} replace={true} />
   )
 }
 

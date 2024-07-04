@@ -27,7 +27,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         </div>
         <div className="w-full transition-all duration-1000">
           <NavLink
-            to={'/dashboard'}
+            to={'/admin/dashboard'}
             className={({ isActive }) =>
               isActive
                 ? 'flex h-20 flex-wrap items-center justify-center gap-1 bg-neutral-100 bg-opacity-30 py-5 font-bold text-neutral-100'
@@ -40,7 +40,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             {!isNavActive && <span className="text-xs">Dashboard</span>}
           </NavLink>
           <NavLink
-            to={'/cars'}
+            to={'/admin/cars'}
             className={({ isActive }) =>
               isActive
                 ? 'flex h-20 flex-wrap items-center justify-center gap-1 bg-neutral-100 bg-opacity-30 py-5 font-bold text-neutral-100'
@@ -64,7 +64,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           ></Link>
         </div>
         <NavLink
-          to={'/dashboard'}
+          to={'/admin/dashboard'}
           className={({ isActive }) =>
             isActive
               ? 'flex h-20 w-full items-center bg-neutral-100 bg-opacity-30'
@@ -79,7 +79,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           </p>
         </NavLink>
         <NavLink
-          to={'/cars'}
+          to={'/admin/cars'}
           className={({ isActive }) =>
             isActive
               ? 'flex h-20 w-full items-center bg-neutral-100 bg-opacity-30'
@@ -151,7 +151,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
                 <li className="w-full py-2">
                   <Link
                     className="inline-block w-full"
-                    to={'/logout'}
+                    to={'/admin/logout'}
                     replace={true}
                   >
                     Sign Out

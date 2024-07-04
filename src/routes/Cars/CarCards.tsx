@@ -15,7 +15,7 @@ const CarCards = () => {
         <div className="flex w-full justify-between gap-6">
           <h2 className="text-xl font-bold">List Car</h2>
           <Link
-            to={'/cars/create'}
+            to={'/admin/cars/create'}
             className="flex items-center gap-3 rounded-sm bg-darkblue-700 px-3 py-2 text-sm font-bold text-neutral-100 hover:bg-darkblue-900 active:bg-darkblue-500 disabled:bg-darkblue-100"
           >
             <FiPlus strokeWidth={4} />
@@ -26,25 +26,25 @@ const CarCards = () => {
           <div className="flex gap-4 overflow-auto">
             <button
               className={`${category ? 'border-darkblue-300 bg-neutral-100 text-darkblue-300' : 'border-darkblue-700 bg-darkblue-100 text-darkblue-700'} rounded-sm border px-3 py-2 text-sm font-bold`}
-              onClick={() => navigate('/cars')}
+              onClick={() => navigate('/admin/cars')}
             >
               All
             </button>
             <button
               className={`${category === 'small' ? 'border-darkblue-700 bg-darkblue-100 text-darkblue-700' : 'border-darkblue-300 bg-neutral-100 text-darkblue-300'} rounded-sm border px-3 py-2 text-sm font-bold`}
-              onClick={() => navigate('/cars/category/small')}
+              onClick={() => navigate('/admin/cars/category/small')}
             >
               Small
             </button>
             <button
               className={`${category === 'medium' ? 'border-darkblue-700 bg-darkblue-100 text-darkblue-700' : 'border-darkblue-300 bg-neutral-100 text-darkblue-300'} rounded-sm border px-3 py-2 text-sm font-bold`}
-              onClick={() => navigate('/cars/category/medium')}
+              onClick={() => navigate('/admin/cars/category/medium')}
             >
               Medium
             </button>
             <button
               className={`${category === 'large' ? 'border-darkblue-700 bg-darkblue-100 text-darkblue-700' : 'border-darkblue-300 bg-neutral-100 text-darkblue-300'} rounded-sm border px-3 py-2 text-sm font-bold`}
-              onClick={() => navigate('/cars/category/large')}
+              onClick={() => navigate('/admin/cars/category/large')}
             >
               Large
             </button>

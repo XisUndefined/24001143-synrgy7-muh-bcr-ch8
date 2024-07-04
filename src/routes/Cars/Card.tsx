@@ -20,7 +20,7 @@ const Card = () => {
                   car.image
                     ? `${car.image}`
                     : location.pathname.split('/').length > 2
-                      ? '../../img/car-not-found.jpg'
+                      ? '../../../img/car-not-found.jpg'
                       : 'img/car-not-found.jpg'
                 }
                 alt=""
@@ -47,15 +47,25 @@ const Card = () => {
                   <span className="flex w-full items-center gap-2">
                     <FiClock className="text-neutral-500" />
                     <p className="line-clamp-1 text-sm font-light">
-                      {`Updated at ${new Date(car.updated_at)
-                        .toUTCString()
-                        .split(' ')
-                        .slice(1, 4)
-                        .join(' ')}, ${new Date(car.updated_at)
-                        .toTimeString()
-                        .split(':')
-                        .slice(0, 2)
-                        .join('.')}`}
+                      {car.deleted_at === null
+                        ? `Updated at ${new Date(car.updated_at)
+                            .toUTCString()
+                            .split(' ')
+                            .slice(1, 4)
+                            .join(' ')}, ${new Date(car.updated_at)
+                            .toTimeString()
+                            .split(':')
+                            .slice(0, 2)
+                            .join('.')}`
+                        : `Deleted at ${new Date(car.deleted_at!)
+                            .toUTCString()
+                            .split(' ')
+                            .slice(1, 4)
+                            .join(' ')}, ${new Date(car.deleted_at!)
+                            .toTimeString()
+                            .split(':')
+                            .slice(0, 2)
+                            .join('.')}`}
                     </p>
                   </span>
                 </article>
@@ -71,14 +81,24 @@ const Card = () => {
                     <FiTrash />
                     Delete
                   </button>
-                  <Link
-                    to={`/cars/${car.id}`}
-                    state={{ car }}
-                    className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-limegreen-700 bg-limegreen-700 px-3 py-2 text-sm font-bold text-neutral-100"
-                  >
-                    <FiEdit />
-                    Edit
-                  </Link>
+                  {car.deleted_at === null ? (
+                    <Link
+                      to={`/admin/cars/${car.id}`}
+                      state={{ car }}
+                      className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-limegreen-700 bg-limegreen-700 px-3 py-2 text-sm font-bold text-neutral-100"
+                    >
+                      <FiEdit />
+                      Edit
+                    </Link>
+                  ) : (
+                    <button
+                      disabled
+                      className="flex w-1/2 items-center justify-center gap-2 rounded-sm border border-limegreen-700 bg-limegreen-700 px-3 py-2 text-sm font-bold text-neutral-100 disabled:border-limegreen-100 disabled:bg-limegreen-100"
+                    >
+                      <FiEdit />
+                      Edit
+                    </button>
+                  )}
                 </span>
               </div>
             </div>

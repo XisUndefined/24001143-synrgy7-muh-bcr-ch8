@@ -8,12 +8,12 @@ const Breadcrumb = () => {
   return (
     <span className="flex items-center gap-1 text-xs font-bold">
       <Link
-        to={`/${pathnames[0] === 'cars' ? 'cars' : 'dashboard'}`}
+        to={`/admin/${pathnames[1] === 'cars' ? 'cars' : 'dashboard'}`}
         className={`first-letter:capitalize ${pathnames.slice(-1)[0] === pathnames[0] ? 'font-display font-light' : ''} hover:underline`}
       >
-        {`${pathnames[0] === 'cars' ? 'cars' : 'dashboard'}`}
+        {`${pathnames[1] === 'cars' ? 'cars' : 'dashboard'}`}
       </Link>
-      {pathnames.slice(1).map((path, idx) => (
+      {pathnames.slice(2).map((path, idx) => (
         <span key={idx} className="flex items-center gap-1">
           <FiChevronRight />
           {path !== 'category' ? (

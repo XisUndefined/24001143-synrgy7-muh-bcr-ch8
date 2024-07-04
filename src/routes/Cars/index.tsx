@@ -37,20 +37,20 @@ const Cars = () => {
       const response = await resCar.json()
       if (!resCar) {
         setSelectedCarId(null)
-        navigate('/cars', {
+        navigate('/admin/cars', {
           replace: true,
           state: { error: response.message },
         })
       } else {
         setSelectedCarId(null)
-        navigate('/cars', {
+        navigate('/admin/cars', {
           replace: true,
           state: { message: 'Data Berhasil Dihapus' },
         })
       }
     } catch {
       setSelectedCarId(null)
-      navigate('/cars', {
+      navigate('/admin/cars', {
         replace: true,
         state: { error: 'Something Went Wrong' },
       })
@@ -80,7 +80,6 @@ const Cars = () => {
         })
 
         const query = new URLSearchParams(params).toString()
-        console.log({ query })
 
         try {
           const carResponse = await api.get(
@@ -190,13 +189,11 @@ const Cars = () => {
         </div>
       )}
       <RootLayout>
-        {showModal && (
-          <div
-            className={`mx-auto flex w-full rounded-md ${showModal ? 'translate-y-20' : '-translate-y-20'} ${location.state ? (location.state.error ? 'bg-danger' : location.state.message ? 'bg-black' : location.state.success ? 'bg-success' : '') : ''} px-4 py-3 text-center font-display text-base font-medium text-neutral-100 shadow-high transition-all ease-in-out md:w-1/2`}
-          >
-            <p className="w-full">{`${location.state ? (location.state.error ? location.state.error : location.state.message ? location.state.message : location.state.success ? location.state.success : '') : ''}`}</p>
-          </div>
-        )}
+        <div
+          className={`mx-auto flex w-full rounded-md ${showModal ? 'translate-y-20' : '-translate-y-36'} ${location.state ? (location.state.error ? 'bg-danger' : location.state.message ? 'bg-black' : location.state.success ? 'bg-success' : '') : ''} px-4 py-3 text-center font-display text-base font-medium text-neutral-100 shadow-high transition-all ease-in-out md:w-1/2`}
+        >
+          <p className="w-full">{`${location.state ? (location.state.error ? location.state.error : location.state.message ? location.state.message : location.state.success ? location.state.success : '') : ''}`}</p>
+        </div>
         <Breadcrumb />
         <CarCards />
       </RootLayout>

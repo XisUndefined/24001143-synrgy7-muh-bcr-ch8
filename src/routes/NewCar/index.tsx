@@ -5,6 +5,7 @@ import api from '../../api/api'
 import useAuth from '../../hooks/useAuth'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import CarFormProvider from '../../contexts/CarFormProvider'
 
 type CarFormInputs = {
   manufacture: string
@@ -63,16 +64,24 @@ const NewCar = () => {
     reqBody.capacity = Number(`${reqBody.capacity}`)
     if (options) {
       reqBody.options = JSON.stringify(
-        options.map((option) => {
-          return option.option
-        })
+        options
+          .filter((option) => {
+            return option.option.trim() !== ''
+          })
+          .map((option) => {
+            return option.option
+          })
       )
     }
     if (specs) {
       reqBody.specs = JSON.stringify(
-        specs.map((spec) => {
-          return spec.spec
-        })
+        specs
+          .filter((spec) => {
+            return spec.spec.trim() !== ''
+          })
+          .map((spec) => {
+            return spec.spec
+          })
       )
     }
 
@@ -92,7 +101,7 @@ const NewCar = () => {
       if (!resCar.ok) {
         setError(response)
       } else {
-        navigate('/cars', {
+        navigate('/admin/cars', {
           state: { success: 'Data Berhasil Disimpan' },
           replace: true,
         })
@@ -110,8 +119,9 @@ const NewCar = () => {
       <Breadcrumb />
       <section className="my-4 w-full">
         <h2 className="text-xl font-bold">Add New Car</h2>
-
-        <CarForm onSubmit={handleFormSubmit} error={error} />
+        <CarFormProvider>
+          <CarForm onSubmit={handleFormSubmit} error={error} />
+        </CarFormProvider>
       </section>
     </RootLayout>
   )
