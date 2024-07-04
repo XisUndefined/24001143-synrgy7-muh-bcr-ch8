@@ -73,7 +73,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           onClick={handleNavActive}
         >
           <p
-            className={`${isNavActive ? '' : '-translate-x-full'} text-xl font-bold duration-300 ease-in-out`}
+            className={`${isNavActive ? 'ml-4' : '-translate-x-full'} text-xl font-bold duration-300 ease-in-out`}
           >
             Dashboard
           </p>
@@ -88,7 +88,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           onClick={handleNavActive}
         >
           <p
-            className={`${isNavActive ? '' : '-translate-x-full'} text-xl font-bold duration-300 ease-in-out`}
+            className={`${isNavActive ? 'ml-4' : '-translate-x-full'} text-xl font-bold duration-300 ease-in-out`}
           >
             Cars
           </p>
