@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom'
 import Breadcrumb from '../../components/Breadcrumb'
 import Loading from '../../components/Loading'
 import useDashboard from '../../hooks/useDashboard'
-import RootLayout from '../../layouts/RootLayout'
+import DashboardLayout from '../../layouts/DashboardLayout'
 import OrderTable from './OrderTable'
 import useAuth from '../../hooks/useAuth'
 import { useEffect } from 'react'
@@ -33,7 +33,7 @@ const Dashboard = () => {
         }
 
         const searchParams = new URLSearchParams(location.search)
-        const params = parseParams(searchParams)
+        const params = parseParams(searchParams, ['q'])
 
         const query = new URLSearchParams(params).toString()
 
@@ -104,7 +104,7 @@ const Dashboard = () => {
   return isLoading ? (
     <Loading size="5vw" bgSize="100vh" />
   ) : (
-    <RootLayout>
+    <DashboardLayout>
       <Breadcrumb />
       <TableProvider options={{ table: 'orders' }}>
         <OrderTable />
@@ -112,7 +112,7 @@ const Dashboard = () => {
       <TableProvider options={{ table: 'cars' }}>
         <CarTable />
       </TableProvider>
-    </RootLayout>
+    </DashboardLayout>
   )
 }
 

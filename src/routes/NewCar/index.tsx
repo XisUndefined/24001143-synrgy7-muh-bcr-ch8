@@ -1,61 +1,22 @@
 import Breadcrumb from '../../components/Breadcrumb'
-import RootLayout from '../../layouts/RootLayout'
+import DashboardLayout from '../../layouts/DashboardLayout'
 import CarForm from '../../components/CarForm'
 import api from '../../api/api'
 import useAuth from '../../hooks/useAuth'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CarFormProvider from '../../contexts/CarFormProvider'
-
-type CarFormInputs = {
-  manufacture: string
-  model: string
-  transmission: string
-  plate: string
-  year: number
-  driver_service: string
-  rent_per_day: number
-  capacity: number
-  type: string
-  category: string
-  options?: {
-    option: string
-  }[]
-  specs?: {
-    spec: string
-  }[]
-  description: string
-}
-
-type CarReqBody = {
-  manufacture: string
-  model: string
-  transmission: string
-  plate: string
-  year: number
-  driver_service: boolean
-  rent_per_day: number
-  capacity: number
-  type: string
-  category: string
-  options?: string
-  specs?: string
-  description: string
-}
-
-type Error = {
-  status: string
-  message: string
-}
+import { ResponseError } from '../../types/response'
+import { Car, CarFormType } from '../../types/car'
 
 const NewCar = () => {
   const { token } = useAuth()
   const navigate = useNavigate()
-  const [error, setError] = useState<Error | null>(null)
-  const handleFormSubmit = async (data: CarFormInputs) => {
+  const [error, setError] = useState<ResponseError | null>(null)
+  const handleFormSubmit = async (data: CarFormType) => {
     setError(null)
     const { driver_service, options, specs, ...rest } = data
-    const reqBody: CarReqBody = {
+    const reqBody: Partial<Car> = {
       ...rest,
       driver_service: driver_service === 'Dengan Sopir',
     }
@@ -115,7 +76,7 @@ const NewCar = () => {
   }
 
   return (
-    <RootLayout>
+    <DashboardLayout>
       <Breadcrumb />
       <section className="my-4 w-full">
         <h2 className="text-xl font-bold">Add New Car</h2>
@@ -123,7 +84,7 @@ const NewCar = () => {
           <CarForm onSubmit={handleFormSubmit} error={error} />
         </CarFormProvider>
       </section>
-    </RootLayout>
+    </DashboardLayout>
   )
 }
 

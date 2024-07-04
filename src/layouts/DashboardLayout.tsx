@@ -11,7 +11,7 @@ import {
 import { ReactNode, useState } from 'react'
 import useAuth from '../hooks/useAuth'
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { isNavActive, handleNavActive } = useNavbar()
   const { user } = useAuth()
   const [dropdown, setDropdown] = useState(false)
@@ -169,4 +169,4 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export default RootLayout
+export default DashboardLayout

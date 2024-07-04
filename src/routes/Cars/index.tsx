@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth'
 import { useEffect, useRef, useState } from 'react'
 import api from '../../api/api'
 import Loading from '../../components/Loading'
-import RootLayout from '../../layouts/RootLayout'
+import DashboardLayout from '../../layouts/DashboardLayout'
 import Breadcrumb from '../../components/Breadcrumb'
 import CarCards from './CarCards'
 
@@ -20,6 +20,7 @@ const Cars = () => {
     isLoading,
     selectedCarId,
     setSelectedCarId,
+    parseParams,
   } = useDashboard()
   const { token } = useAuth()
   const navigate = useNavigate()
@@ -65,19 +66,8 @@ const Cars = () => {
         if (!isLoading) {
           setIsLoading(true)
         }
-        const params: { [key: string]: string } = {}
         const searchParams = new URLSearchParams(location.search)
-        searchParams.forEach((value, key) => {
-          if (
-            (key === 'q' ||
-              key === 'page' ||
-              key === 'size' ||
-              key === 'sort') &&
-            value.trim() !== ''
-          ) {
-            params[key] = value.trim()
-          }
-        })
+        const params = parseParams(searchParams, ['q', 'page', 'size', 'sort'])
 
         const query = new URLSearchParams(params).toString()
 
@@ -188,7 +178,7 @@ const Cars = () => {
           </div>
         </div>
       )}
-      <RootLayout>
+      <DashboardLayout>
         <div
           className={`mx-auto flex w-full rounded-md ${showModal ? 'translate-y-20' : '-translate-y-36'} ${location.state ? (location.state.error ? 'bg-danger' : location.state.message ? 'bg-black' : location.state.success ? 'bg-success' : '') : ''} px-4 py-3 text-center font-display text-base font-medium text-neutral-100 shadow-high transition-all ease-in-out md:w-1/2`}
         >
@@ -196,7 +186,7 @@ const Cars = () => {
         </div>
         <Breadcrumb />
         <CarCards />
-      </RootLayout>
+      </DashboardLayout>
     </>
   )
 }

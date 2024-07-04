@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import Breadcrumb from '../../components/Breadcrumb'
 import CarForm from '../../components/CarForm'
-import RootLayout from '../../layouts/RootLayout'
+import DashboardLayout from '../../layouts/DashboardLayout'
 import { useEffect, useState } from 'react'
 import api from '../../api/api'
 import useAuth from '../../hooks/useAuth'
@@ -181,7 +181,7 @@ const EditCar = () => {
   return isLoading ? (
     <Loading size="5vw" bgSize="100vh" />
   ) : (
-    <RootLayout>
+    <DashboardLayout>
       <Breadcrumb />
       <section className="my-4 w-full">
         <h2 className="text-xl font-bold">Edit Car</h2>
@@ -189,7 +189,7 @@ const EditCar = () => {
           <CarForm onSubmit={handleFormSubmit} error={error} car={car as Car} />
         </CarFormProvider>
       </section>
-    </RootLayout>
+    </DashboardLayout>
   )
 }
 

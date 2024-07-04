@@ -1,53 +1,7 @@
 import React, { ReactNode, createContext, useState } from 'react'
-
-type Order = {
-  id: string
-  email: string
-  car: string
-  bank: string
-  transfer_image?: string
-  status: string
-  price: number
-  start_rent: string
-  finish_rent: string
-  created_at: string
-  updated_at: string
-}
-
-type Car = {
-  id: string
-  created_by: string
-  updated_by?: string
-  deleted_by?: string
-  manufacture: string
-  model: string
-  transmission: string
-  plate: string
-  year: number
-  driver_service: boolean
-  rent_per_day: number
-  image?: string
-  capacity: number
-  type: string
-  category: string
-  options?: string
-  specs?: string
-  description: string
-  deleted_at?: string
-  created_at: string
-  updated_at: string
-}
-
-type NotFound = {
-  status: string
-  message: string
-}
-
-type Paging = {
-  page: number
-  total_page: number
-  size: number
-}
+import { Order } from '../types/order'
+import { Paging, ResponseError } from '../types/response'
+import { Car } from '../types/car'
 
 type DashboardContextType = {
   orders: Order[] | null
@@ -58,15 +12,16 @@ type DashboardContextType = {
   setCars: React.Dispatch<React.SetStateAction<Car[] | null>>
   carsPage: Paging | null
   setCarsPage: React.Dispatch<React.SetStateAction<Paging | null>>
-  carsNotFound: NotFound | null
-  setCarsNotFound: React.Dispatch<React.SetStateAction<NotFound | null>>
-  ordersNotFound: NotFound | null
-  setOrdersNotFound: React.Dispatch<React.SetStateAction<NotFound | null>>
+  carsNotFound: ResponseError | null
+  setCarsNotFound: React.Dispatch<React.SetStateAction<ResponseError | null>>
+  ordersNotFound: ResponseError | null
+  setOrdersNotFound: React.Dispatch<React.SetStateAction<ResponseError | null>>
   isLoading: boolean
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  parseParams: (params: URLSearchParams) => {
-    [key: string]: string
-  }
+  parseParams: (
+    params: URLSearchParams,
+    keys: string[]
+  ) => { [key: string]: string }
   selectedCarId: string | null
   setSelectedCarId: React.Dispatch<React.SetStateAction<string | null>>
 }
@@ -78,15 +33,17 @@ const DashboardProvider = ({ children }: { children: ReactNode }) => {
   const [cars, setCars] = useState<Car[] | null>(null)
   const [ordersPage, setOrdersPage] = useState<Paging | null>(null)
   const [carsPage, setCarsPage] = useState<Paging | null>(null)
-  const [carsNotFound, setCarsNotFound] = useState<NotFound | null>(null)
-  const [ordersNotFound, setOrdersNotFound] = useState<NotFound | null>(null)
+  const [carsNotFound, setCarsNotFound] = useState<ResponseError | null>(null)
+  const [ordersNotFound, setOrdersNotFound] = useState<ResponseError | null>(
+    null
+  )
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [selectedCarId, setSelectedCarId] = useState<string | null>(null)
 
-  const parseParams = (params: URLSearchParams) => {
+  const parseParams = (params: URLSearchParams, keys: string[]) => {
     const searchParams: { [key: string]: string } = {}
     params.forEach((value, key) => {
-      if (key === 'q' && value.trim() !== '') {
+      if (keys.includes(key) && value.trim() !== '') {
         searchParams[key] = value.trim()
       }
     })
