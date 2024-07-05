@@ -3,11 +3,11 @@ import useDashboard from '../../hooks/useDashboard'
 import { Link, useLocation } from 'react-router-dom'
 
 const Card = () => {
-  const { cars, setSelectedCarId } = useDashboard()
+  const { cars, carsNotFound, setSelectedCarId } = useDashboard()
   const location = useLocation()
   return (
     <>
-      {cars && (
+      {cars ? (
         <div className="my-6 flex w-full flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5">
           {cars.map((car, idx) => (
             <div
@@ -104,6 +104,18 @@ const Card = () => {
             </div>
           ))}
         </div>
+      ) : carsNotFound && carsNotFound.status === 'fail' ? (
+        <img
+          src="../../img/404 error with person looking for-cuate.svg"
+          alt="car-not-found"
+          className="mx-auto my-6 w-full max-w-[726px] object-cover"
+        />
+      ) : (
+        <img
+          src="../../img/500 Internal Server Error-pana.svg"
+          alt="internal-server-error"
+          className="mx-auto my-6 w-full max-w-[726px] object-cover"
+        />
       )}
     </>
   )

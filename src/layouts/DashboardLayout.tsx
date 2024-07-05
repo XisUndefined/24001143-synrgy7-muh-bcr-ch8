@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import useNavbar from '../hooks/useNavbar'
 import {
   FiChevronDown,
@@ -8,13 +8,21 @@ import {
   FiTruck,
   FiX,
 } from 'react-icons/fi'
-import { ReactNode, useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import useAuth from '../hooks/useAuth'
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { isNavActive, handleNavActive } = useNavbar()
   const { user } = useAuth()
   const [dropdown, setDropdown] = useState(false)
+  const [searchValue, setSearchValue] = useState<string>('')
+  const navigate = useNavigate()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigate(`?q=${searchValue.trim()}`)
+    setSearchValue('')
+  }
 
   return (
     <div className="flex h-screen">
@@ -107,18 +115,21 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
             )}
           </button>
           <div className="flex w-full gap-6 md:w-2/3 lg:w-1/3">
-            <form className="flex w-full">
+            <form className="flex w-full" onSubmit={handleSearch}>
               <span className="flex w-full items-center gap-2 rounded-sm border border-neutral-300 px-3 py-2">
                 <FiSearch className="text-lg text-neutral-300" />
                 <input
                   type="text"
                   placeholder="Search"
                   className="w-full font-sans text-xs placeholder:font-sans placeholder:text-xs focus:outline-none"
+                  value={searchValue}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
                 />
               </span>
               <button
                 type="submit"
                 className="hidden rounded-sm border border-darkblue-700 px-3 py-2 text-center text-sm font-bold text-darkblue-700 md:inline-block"
+                disabled={searchValue.trim() === ''}
               >
                 Search
               </button>

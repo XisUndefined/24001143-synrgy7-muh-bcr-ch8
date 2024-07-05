@@ -4,6 +4,7 @@ import { useState } from 'react'
 import api from '../../api/api'
 import useAuth from '../../hooks/useAuth'
 import { LoginValues } from '../CustomerLogin/CustomerLoginForm'
+import Spinner from '../../components/Spinner'
 
 type SignupValues = LoginValues & {
   firstname: string
@@ -22,7 +23,7 @@ const CustomerSignupForm = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<SignupValues>({ mode: 'onChange' })
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -189,11 +190,11 @@ const CustomerSignupForm = () => {
         )}
 
         <button
-          className="my-8 w-full rounded-sm bg-darkblue-700 px-3 py-2 font-bold text-neutral-100 disabled:bg-darkblue-100"
+          className="my-8 flex w-full justify-center rounded-sm bg-darkblue-700 px-3 py-2 font-bold text-neutral-100 disabled:bg-darkblue-100"
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || isSubmitting}
         >
-          Sign Up
+          {isSubmitting ? <Spinner size="24px" borderSize="2px" /> : 'Sign Up'}
         </button>
       </form>
       <p className="w-full text-center text-sm">

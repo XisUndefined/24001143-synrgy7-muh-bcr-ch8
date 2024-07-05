@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import api from '../../api/api'
 import { useState } from 'react'
+import Spinner from '../../components/Spinner'
 
 export type LoginValues = {
   email: string
@@ -30,7 +31,7 @@ const CustomerLoginForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<LoginValues>({ mode: 'onChange' })
 
   const onSubmit: SubmitHandler<LoginValues> = async (data) => {
@@ -107,11 +108,11 @@ const CustomerLoginForm = () => {
         )}
 
         <button
-          className="my-8 w-full rounded-sm bg-darkblue-700 px-3 py-2 font-bold text-neutral-100 disabled:bg-darkblue-100"
+          className="my-8 flex w-full justify-center rounded-sm bg-darkblue-700 px-3 py-2 font-bold text-neutral-100 disabled:bg-darkblue-100"
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || isSubmitting}
         >
-          Sign In
+          {isSubmitting ? <Spinner size="24px" borderSize="2px" /> : 'Sign In'}
         </button>
       </form>
       <p className="w-full text-center text-sm">

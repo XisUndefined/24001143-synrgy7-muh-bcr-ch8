@@ -34,10 +34,10 @@ const UserDropdown = () => {
           className={`flex select-none flex-wrap text-nowrap text-sm leading-5 transition-all duration-500 ease-in-out max-md:py-4 md:absolute md:right-0 md:top-20 md:divide-y md:rounded-lg md:bg-[#f1f3ff] md:px-3 md:py-4 md:shadow-low`}
         >
           <li className="md: w-full py-2">
-            <Link to={'/profile'}>Profile</Link>
+            <p>Profile</p>
           </li>
           <li className="md: w-full py-2">
-            <Link to={'/orders'}>Orders</Link>
+            <p>Orders</p>
           </li>
           <li className="md: w-full py-2">
             <Link to={'/logout'}>Sign Out</Link>
