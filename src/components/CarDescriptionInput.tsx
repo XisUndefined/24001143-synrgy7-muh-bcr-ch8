@@ -29,7 +29,6 @@ const CarDescriptionInput: React.FC<Props> = ({ car }) => {
         return textOnly !== '' || 'Description is required'
       },
     })
-    // console.clear()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [register, car])
 
