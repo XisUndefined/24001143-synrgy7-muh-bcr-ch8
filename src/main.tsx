@@ -17,40 +17,44 @@ import AdminLogin from './routes/AdminLogin'
 import CustomerLogin from './routes/CustomerLogin'
 import CustomerSignup from './routes/CustomerSignup'
 import SearchCar from './routes/SearchCar'
+import React from 'react'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <AuthProvider>
-      <DashboardProvider>
-        <NavbarProvider>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/" element={<CustomerProtectedRoute />}>
-              <Route path="/search" element={<SearchCar />} />
-              <Route path="/logout" element={<Logout />} />
-            </Route>
-            <Route path="/admin" element={<ProtectedRoute />}>
-              <Route index element={<Dashboard />} />
-              <Route path="/admin/dashboard" element={<Dashboard />} />
-              <Route path="/admin/cars" element={<Cars />} />
-              <Route path="/admin/cars/category/:category" element={<Cars />} />
-              <Route path="/admin/cars/create" element={<NewCar />} />
-              <Route path="/admin/cars/:id" element={<EditCar />} />
-              <Route path="/admin/logout" element={<Logout />} />
-            </Route>
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/login" element={<CustomerLogin />} />
-            <Route path="/signup" element={<CustomerSignup />} />
-            <Route
-              path="*"
-              element={<Navigate to={'/not-found'} replace={true} />}
-            />
-            <Route path="/not-found" element={<NotFound />} />
-          </Routes>
-        </NavbarProvider>
-      </DashboardProvider>
-    </AuthProvider>
-  </BrowserRouter>
-  // <React.StrictMode>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <DashboardProvider>
+          <NavbarProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/" element={<CustomerProtectedRoute />}>
+                <Route path="/search" element={<SearchCar />} />
+                <Route path="/logout" element={<Logout />} />
+              </Route>
+              <Route path="/admin" element={<ProtectedRoute />}>
+                <Route index element={<Dashboard />} />
+                <Route path="/admin/dashboard" element={<Dashboard />} />
+                <Route path="/admin/cars" element={<Cars />} />
+                <Route
+                  path="/admin/cars/category/:category"
+                  element={<Cars />}
+                />
+                <Route path="/admin/cars/create" element={<NewCar />} />
+                <Route path="/admin/cars/:id" element={<EditCar />} />
+                <Route path="/admin/logout" element={<Logout />} />
+              </Route>
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/login" element={<CustomerLogin />} />
+              <Route path="/signup" element={<CustomerSignup />} />
+              <Route
+                path="*"
+                element={<Navigate to={'/not-found'} replace={true} />}
+              />
+              <Route path="/not-found" element={<NotFound />} />
+            </Routes>
+          </NavbarProvider>
+        </DashboardProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 )
